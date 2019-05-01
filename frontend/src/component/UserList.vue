@@ -7,19 +7,37 @@
                     <thead>
                     <tr>
                         <th>ID</th>
-                        <th>用户名</th>
-                        <th>密码</th>
-                        <th>操作</th>
+                        <th>Name</th>
+                        <th>Gender</th>
+                        <th>PhoneNumber</th>
+<!--                        <th>Email</th>-->
+<!--                        <th>PostCode</th>-->
+<!--                        <th>City</th>-->
+<!--                        <th>Address</th>-->
+                        <th>Account</th>
+                        <th>Password</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="user in userList" :key="user.id">
-                        <td>{{user.id}}</td>
-                        <td>{{user.name}}</td>
-                        <td>{{user.password}}</td>
-                        <td><button class ="button is-primary" v-on:click="deleteUser(user.id)">删除</button></td>
+                    <tr v-for="member in memberList" :key="memberList.id">
+                        <td>{{member.id}}</td>
+                        <td>{{member.name}}</td>
+                        <td>{{member.gender}}</td>
+                        <td>{{member.phoneNumber}}</td>
+<!--                        <td>{{member.email}}</td>-->
+<!--                        <td>{{member.postCode}}</td>-->
+<!--                        <td>{{member.city}}</td>-->
+<!--                        <td>{{member.address}}</td>-->
+                        <td>{{member.account}}</td>
+                        <td>{{member.password}}</td>
+                        <td><button class="button">Details</button></td>
+                        <td><button class ="button">Update</button></td>
+                        <td><button class ="button is-primary" v-on:click="deleteMember(user.id)">Delete</button></td>
                     </tr>
                     </tbody>
+                    <tfoot>
+                        <button class ="button">Add</button>
+                    </tfoot>
                 </table>
             </div>
 </template>
@@ -30,16 +48,34 @@ import 'bulma/css/bulma.css'
 
 export default {
     data(){
-        return {userList:[]}
+        return {
+            memberInstance: {
+                id: '',
+                name: '',
+                gender:'',
+                phoneNumber:'',
+                email:'',
+                postCode:'',
+                city:'',
+                address:'',
+                account:'',
+                password:''
+            },
+            memberList:[]
+        }
     },
     mounted(){
-         Axios.get("http://localhost:8082/rest/member/").then(response=>{
-      console.log(response);
-      this.userList = response.data
-    })
+        Axios({
+            method: 'get',
+            url: '/member/query/all',
+            baseURL: 'http://localhost:8082',
+        }).then(response=> {
+            console.log(response)
+            this.memberList = response.data
+        })
     },
     methods:{
-        deleteUser:function(id){
+        deleteMember:function(id){
              Axios.delete("http://localhost:8082/rest/member/"+id).then(response=>{
                 console.log(response)
              });

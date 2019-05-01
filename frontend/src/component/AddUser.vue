@@ -13,7 +13,6 @@
                             <input v-model="user.password" type="password" class="input" id="password"
                                    placeholder="Password">
                         </div>
-
                     </div>
 
                     <div class="field">
@@ -39,9 +38,9 @@ export default {
             Axios.defaults.headers.post['Content-Type'] = 'application/json';
             var formData = JSON.stringify(this.user)
             console.log(formData)
-             Axios.post("http://localhost:8082/rest/member/",formData).then(response=>{
-                console.log(response)
-             });
+             Axios.post("http://localhost:8082/add/member/",formData).then(function (response) {
+                 console.log(response)
+             })
         }
     }
 }
