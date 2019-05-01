@@ -7,11 +7,14 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import javax.transaction.Transactional;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:spring-mybatis.xml"})
+@Transactional
 public class MemberDaoTest {
     @Autowired
     private IMemberDao memberDao;
@@ -21,7 +24,8 @@ public class MemberDaoTest {
     {
         Member member = memberDao.getMemberById(1);
         assertEquals(member.getName(),"zhangsan");
-        member = memberDao.getMemberByAccount()
+        member = memberDao.getMemberByAccount("zhangsan");
+        assertEquals(member.getPassword(), "123456");
     }
 
     @Test
@@ -34,11 +38,11 @@ public class MemberDaoTest {
     }
 
     @Test
-    public void testInsert()
+    public void testAdd()
     {
         Member member = new Member();
         member.setId(100);
-        member.setName("zsh");
+        member.setName("hehe");
         member.setGender('f');
         member.setCity("Beijing");
         member.setAddress("ChangAn Street");
@@ -49,7 +53,24 @@ public class MemberDaoTest {
         member.setPassword("123");
         memberDao.addMember(member);
         Member selectMember = memberDao.getMemberById(100);
-        assertEquals(selectMember.getName(),"zsh");
+        assertEquals(selectMember.getName(),"hehe");
+    }
+
+    @Test
+    public void testUpdate()
+    {
+        Member member = memberDao.getMemberById(1);
+        member.setPassword("6666");
+        memberDao.updateMember(member);
+        Member newMember = memberDao.getMemberById(1);
+        assertEquals(newMember.getPassword(), "6666");
+    }
+
+    @Test
+    public void testDelete()
+    {
+        Member member = memberDao.getMemberById(1);
+        memberDao.deleteMember(member);
     }
 
 }
