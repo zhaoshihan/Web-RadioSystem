@@ -17,8 +17,8 @@ public class MemberService implements IMemberService{
     }
 
     @Override
-    public Member getMemberByName(String name){
-        return memberDao.getMemberByName(name);
+    public Member getMemberByAccount(String account){
+        return memberDao.getMemberByAccount(account);
     }
 
     @Override

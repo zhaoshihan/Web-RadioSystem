@@ -1,47 +1,81 @@
 package ssm.entity;
+import java.sql.Date;
 
 public class Order {
     private int id;
-    private String name;
-    private String account;
-    private String password;
+    private int memberID;
+    private int productID;
+    private int amount;
+    private int unitPrice;
+    private Date orderDate;
+    private Date sendDate;
+    private String sendAddress;
 
-    public Order(int id, String name, String account, String password) {
-        this.id = id;
-        this.name = name;
-        this.account = account;
-        this.password = password;
+    public Order(){
+
     }
 
     public int getId() {
         return id;
     }
 
+    public int getMemberID() {
+        return memberID;
+    }
+
+    public int getProductID() {
+        return productID;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public int getUnitPrice() {
+        return unitPrice;
+    }
+
+    public Date getOrderDate() {
+        return orderDate;
+    }
+
+    public Date getSendDate() {
+        return sendDate;
+    }
+
+    public String getSendAddress() {
+        return sendAddress;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public void setMemberID(int memberID) {
+        this.memberID = memberID;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProductID(int productID) {
+        this.productID = productID;
     }
 
-    public String getAccount() {
-        return account;
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
-    public void setAccount(String account) {
-        this.account = account;
+    public void setUnitPrice(int unitPrice) {
+        this.unitPrice = unitPrice;
     }
 
-    public String getPassword() {
-        return password;
+    public void setOrderDate(Date orderDate) {
+        this.orderDate = orderDate;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setSendDate(Date sendDate) {
+        this.sendDate = sendDate;
+    }
+
+    public void setSendAddress(String sendAddress) {
+        this.sendAddress = sendAddress;
     }
 }

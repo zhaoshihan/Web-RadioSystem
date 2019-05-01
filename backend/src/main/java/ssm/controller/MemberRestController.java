@@ -10,13 +10,22 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
-@RequestMapping("/rest/member")
+@RequestMapping("/member")
 @CrossOrigin(origins = "*")
 public class MemberRestController {
     @Resource
     private IMemberService memberService;
 
-    @RequestMapping(value="/{id}", method= RequestMethod.GET)
+    @RequestMapping(value = "/check", method = RequestMethod.POST)
+    public HttpStatus checkMember(@RequestParam("account") String account, @RequestParam("password") String password){
+        Member memberExist = this.memberService.getMemberByAccount(account);
+        if(memberExist != null && password.equals(memberExist.getPassword())){
+            return HttpStatus.FOUND;
+        }
+        return HttpStatus.NOT_FOUND;
+    }
+
+    @RequestMapping(value="/query/{id}", method= RequestMethod.GET)
     public ResponseEntity<Member> getMemberById(@PathVariable("id") int id) {
         Member member = this.memberService.getMemberById(id);
         if (member != null) {
@@ -25,7 +34,7 @@ public class MemberRestController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(value = "/",method = RequestMethod.GET)
+    @RequestMapping(value = "/query/all",method = RequestMethod.GET)
     public ResponseEntity<List<Member>> getAllMembers(){
         List<Member> members = memberService.getAllMembers();
         if (members.isEmpty()) {
@@ -34,9 +43,9 @@ public class MemberRestController {
         return new ResponseEntity<>(members, HttpStatus.OK);
     }
 
-    @RequestMapping(value="/", method= RequestMethod.POST)
+    @RequestMapping(value="/add", method= RequestMethod.POST)
     public ResponseEntity<Member> addMember(@RequestBody Member member) {
-        Member memberExist = memberService.getMemberByName(member.getName());
+        Member memberExist = memberService.getMemberById(member.getId());
         if (memberExist != null) {
             return  new ResponseEntity<>(HttpStatus.CONFLICT);
         }else{
@@ -45,7 +54,7 @@ public class MemberRestController {
         }
     }
 
-    @RequestMapping(value="/{id}", method= RequestMethod.DELETE)
+    @RequestMapping(value="/delete", method= RequestMethod.DELETE)
     public ResponseEntity<Member> deleteMember(@RequestBody Member member) {
         Member memberExist = memberService.getMemberById(member.getId());
         if (memberExist != null) {
@@ -56,7 +65,7 @@ public class MemberRestController {
         }
     }
 
-    @RequestMapping(value = "/{id}",method = RequestMethod.PUT)
+    @RequestMapping(value = "/update/{id}",method = RequestMethod.PUT)
     public ResponseEntity<Member> updateUser(@PathVariable("id") int id,@RequestBody Member member){
         Member currentMember = memberService.getMemberById(id);
         HttpStatus httpStatus;

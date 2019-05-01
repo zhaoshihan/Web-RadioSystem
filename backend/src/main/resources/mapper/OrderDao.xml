@@ -4,6 +4,16 @@
 <!-- 设置为IOrderDao接口方法提供sql语句配置 -->
 <mapper namespace="ssm.dao.IOrderDao">
 
-    <select id="getOrderById" resultType="ssm.entity.Order" parameterType="int">select * from order where id = #{id}</select>
-
+    <select id="getOrderById" resultType="ssm.entity.Order" parameterType="int">select * from radio.`order` where id = #{id}</select>
+    <select id="getAllOrders" resultType="ssm.entity.Order">select * from radio.`order`</select>
+    <insert id="addOrder" parameterType="ssm.entity.Order">insert into radio.`order` values(#{id}, #{productID}, #{memberID}, #{orderDate}, #{unitPrice}, #{amount}, #{sendDate}, #{sendAddress})</insert>
 </mapper>
+
+<!--        private int id;-->
+<!--        private int memberID;-->
+<!--        private int productID;-->
+<!--        private int amount;-->
+<!--        private int unitPrice;-->
+<!--        private Date orderDate;-->
+<!--        private Date sendDate;-->
+<!--        private String sendAddress;-->

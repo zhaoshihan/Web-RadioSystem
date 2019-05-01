@@ -6,11 +6,8 @@ public class Staff {
     private String account;
     private String password;
 
-    public Staff(int id, String name, String account, String password) {
-        this.id = id;
-        this.name = name;
-        this.account = account;
-        this.password = password;
+    public Staff(){
+
     }
 
     public int getId() {

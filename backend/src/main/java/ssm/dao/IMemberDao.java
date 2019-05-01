@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface IMemberDao {
     Member getMemberById(int id);
-    Member getMemberByName(String name);
+    Member getMemberByAccount(String account);
     List<Member> getAllMembers();
     int addMember(Member member);
     int updateMember(Member member);

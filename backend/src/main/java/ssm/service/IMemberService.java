@@ -5,7 +5,7 @@ import java.util.List;
 public interface IMemberService {
 
     public Member getMemberById(int id);
-    public Member getMemberByName(String name);
+    public Member getMemberByAccount(String account);
     public List<Member> getAllMembers();
     public boolean addMember(Member member);
     public boolean updateMember(Member member);

@@ -10,7 +10,19 @@ public class StaffService implements IStaffService{
     @Resource
     private IStaffDao staffDao;
 
+    @Override
     public Staff getStaffById(int id){
         return staffDao.getStaffById(id);
     }
+
+    @Override
+    public Staff getStaffByAccount(String account){
+        return staffDao.getStaffByAccount(account);
+    }
+
+    @Override
+    public boolean addStaff(Staff staff){
+        return staffDao.addStaff(staff) > 0;
+    }
+
 }

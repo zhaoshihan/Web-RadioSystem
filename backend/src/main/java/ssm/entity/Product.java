@@ -3,86 +3,97 @@ import java.sql.Date;
 
 public class Product {
     private int id;
-    private int memberID;
-    private int productID;
-    private int amount;
-    private int unitPrice;
-    private Date orderDate;
-    private Date sendDate;
-    private String sendAddress;
+    private String type;
+    private String name;
+    private int price;
+    private int discount;
+    private String habitat;
+    private String director;
+    private String superStar;
+    private Date date;
+    private String description;
 
-    public Product(int id, int memberID, int productID, int amount, int unitPrice, Date orderDate, Date sendDate, String sendAddress) {
-        this.id = id;
-        this.memberID = memberID;
-        this.productID = productID;
-        this.amount = amount;
-        this.unitPrice = unitPrice;
-        this.orderDate = orderDate;
-        this.sendDate = sendDate;
-        this.sendAddress = sendAddress;
+    public Product(){
+
     }
 
     public int getId() {
         return id;
     }
 
-    public int getMemberID() {
-        return memberID;
-    }
-
-    public int getProductID() {
-        return productID;
-    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public int getUnitPrice() {
-        return unitPrice;
-    }
-
-    public Date getOrderDate() {
-        return orderDate;
-    }
-
-    public Date getSendDate() {
-        return sendDate;
-    }
-
-    public String getSendAddress() {
-        return sendAddress;
-    }
-
     public void setId(int id) {
         this.id = id;
     }
 
-    public void setMemberID(int memberID) {
-        this.memberID = memberID;
+    public String getType() {
+        return type;
     }
 
-    public void setProductID(int productID) {
-        this.productID = productID;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public String getName() {
+        return name;
     }
 
-    public void setUnitPrice(int unitPrice) {
-        this.unitPrice = unitPrice;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setOrderDate(Date orderDate) {
-        this.orderDate = orderDate;
+    public int getPrice() {
+        return price;
     }
 
-    public void setSendDate(Date sendDate) {
-        this.sendDate = sendDate;
+    public void setPrice(int price) {
+        this.price = price;
     }
 
-    public void setSendAddress(String sendAddress) {
-        this.sendAddress = sendAddress;
+    public int getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
+    }
+
+    public String getHabitat() {
+        return habitat;
+    }
+
+    public void setHabitat(String habitat) {
+        this.habitat = habitat;
+    }
+
+    public String getDirector() {
+        return director;
+    }
+
+    public void setDirector(String director) {
+        this.director = director;
+    }
+
+    public String getSuperStar() {
+        return superStar;
+    }
+
+    public void setSuperStar(String superStar) {
+        this.superStar = superStar;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

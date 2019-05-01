@@ -5,5 +5,5 @@
 <mapper namespace="ssm.dao.IProductDao">
 
     <select id="getProductById" resultType="ssm.entity.Product" parameterType="int">select * from product where id = #{id}</select>
-
+    <select id="getAllProducts" resultType="ssm.entity.Product">select * from product</select>
 </mapper>

@@ -1,4 +1,4 @@
-package ssm.controller;
+package ssm.utils;
 import ssm.entity.Product;
 import ssm.service.ProductService;
 import org.springframework.stereotype.Controller;

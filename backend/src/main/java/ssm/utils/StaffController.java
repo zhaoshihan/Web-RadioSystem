@@ -1,4 +1,4 @@
-package ssm.controller;
+package ssm.utils;
 import ssm.entity.Staff;
 import ssm.service.StaffService;
 import org.springframework.stereotype.Controller;

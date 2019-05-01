@@ -1,4 +1,4 @@
-package ssm.controller;
+package ssm.utils;
 import ssm.entity.Order;
 import ssm.service.OrderService;
 import org.springframework.stereotype.Controller;

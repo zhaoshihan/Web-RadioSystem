@@ -5,5 +5,7 @@
 <mapper namespace="ssm.dao.IStaffDao">
 
     <select id="getStaffById" resultType="ssm.entity.Staff" parameterType="int">select * from staff where id = #{id}</select>
+    <select id="getStaffByAccount" resultType="ssm.entity.Staff" parameterType="String">select * from staff where account = #{account}</select>
+    <insert id="addStaff" parameterType="ssm.entity.Staff">insert into staff values(#{id}, #{name}, #{account}, #{password})</insert>
 
 </mapper>

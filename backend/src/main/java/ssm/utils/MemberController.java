@@ -1,4 +1,4 @@
-package ssm.controller;
+package ssm.utils;
 import ssm.entity.Member;
 import ssm.service.MemberService;
 import org.springframework.stereotype.Controller;
