@@ -1,5 +1,6 @@
 package ssm.controller;
 
+import org.springframework.http.HttpRequest;
 import ssm.entity.Staff;
 import ssm.service.IStaffService;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Base64;
+import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequestMapping("/staff")
@@ -17,19 +20,31 @@ public class StaffRestController {
     @Resource
     private IStaffService staffService;
 
-    @RequestMapping(value = "/check", method = RequestMethod.POST)
-    public HttpStatus checkStaff(@RequestParam("account") String account, @RequestParam("password") String password){
-//        String account = request.getParameter("account");
-//        String account = staff.getAccount();
-        System.out.println("======Test====== account = " + account);
-//        String password = request.getParameter("password");
-//        String password = staff.getPassword();
-        System.out.println("======Test====== password = " + password);
-        Staff staffExist = this.staffService.getStaffByAccount(account);
-        if(staffExist != null && password.equals(staffExist.getPassword())){
-            return HttpStatus.FOUND;
+    private String[] getFromBASE64(String authorization){
+        if (authorization != null && authorization.toLowerCase().startsWith("basic")) {
+            // Authorization: Basic base64credentials
+            String base64Credentials = authorization.substring("Basic".length()).trim();
+            byte[] credDecoded = Base64.getDecoder().decode(base64Credentials);
+            String credentials = new String(credDecoded, StandardCharsets.UTF_8);
+            // credentials = username:password
+            return credentials.split(":", 2);
         }
-        return HttpStatus.NOT_FOUND;
+        else return null;
+    }
+
+    @RequestMapping(value = "/check", method = RequestMethod.POST)
+    public ResponseEntity checkStaff(@RequestHeader("Authorization") String auth){
+        String[] values = getFromBASE64(auth);
+        if (values != null){
+            String account = values[0];
+            String password = values[1];
+            Staff staffExist = this.staffService.getStaffByAccount(account);
+            if(staffExist != null && password.equals(staffExist.getPassword())){
+                return new ResponseEntity(HttpStatus.OK);
+            }
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        else return new ResponseEntity(HttpStatus.UNAUTHORIZED);
     }
 
     @RequestMapping(value="/query/{id}", method= RequestMethod.GET)
@@ -42,13 +57,13 @@ public class StaffRestController {
     }
 
     @RequestMapping(value="/add", method= RequestMethod.POST)
-    public ResponseEntity<Staff> addStaff(@RequestBody Staff staff) {
-        Staff memberExist = staffService.getStaffById(staff.getId());
-        if (memberExist != null) {
-            return  new ResponseEntity<>(HttpStatus.CONFLICT);
+    public ResponseEntity addStaff(@RequestBody Staff staff) {
+        Staff staffExist = staffService.getStaffById(staff.getId());
+        if (staffExist != null) {
+            return  new ResponseEntity(HttpStatus.CONFLICT);
         }else{
             staffService.addStaff(staff);
-            return new ResponseEntity<>(staff,HttpStatus.CREATED);
+            return new ResponseEntity(HttpStatus.OK);
         }
     }
 

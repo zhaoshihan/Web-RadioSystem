@@ -5,9 +5,9 @@
 <mapper namespace="ssm.dao.IMemberDao">
 
     <select id="getMemberById" resultType="ssm.entity.Member" parameterType="int">select * from member where id = #{id}</select>
-    <select id="getMemberByName" resultType="ssm.entity.Member" parameterType="String">select * from member where name = #{name}</select>
+    <select id="getMemberByAccount" resultType="ssm.entity.Member" parameterType="String">select * from member where account = #{account}</select>
     <select id="getAllMembers" resultType="ssm.entity.Member">select * from member</select>
-    <insert id="addMember" parameterType="ssm.entity.Member">insert into member values (#{id}, #{name}, #{gender}, #{phoneNumber}, #{email}, #{postCode}, #{city}, #{address}, #{account}, #{password})</insert>
+    <insert id="addMember" parameterType="ssm.entity.Member">insert into member values (#{id}, #{name}, #{gender}, #{city}, #{address}, #{postCode}, #{phoneNumber}, #{email}, #{account}, #{password})</insert>
     <update id="updateMember" parameterType="ssm.entity.Member">
         update member set name = #{name}, gender = #{gender}, city = #{city}, address = #{address},
                           postcode = #{postCode}, phonenumber = #{phoneNumber}, email = #{email},

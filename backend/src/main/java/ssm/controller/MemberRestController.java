@@ -5,9 +5,12 @@ import ssm.service.IMemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sun.jvm.hotspot.memory.HeapBlock;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Base64;
+import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequestMapping("/member")
@@ -16,13 +19,31 @@ public class MemberRestController {
     @Resource
     private IMemberService memberService;
 
-    @RequestMapping(value = "/check", method = RequestMethod.POST)
-    public HttpStatus checkMember(@RequestParam("account") String account, @RequestParam("password") String password){
-        Member memberExist = this.memberService.getMemberByAccount(account);
-        if(memberExist != null && password.equals(memberExist.getPassword())){
-            return HttpStatus.FOUND;
+    private String[] getFromBASE64(String authorization){
+        if (authorization != null && authorization.toLowerCase().startsWith("basic")) {
+            // Authorization: Basic base64credentials
+            String base64Credentials = authorization.substring("Basic".length()).trim();
+            byte[] credDecoded = Base64.getDecoder().decode(base64Credentials);
+            String credentials = new String(credDecoded, StandardCharsets.UTF_8);
+            // credentials = username:password
+            return credentials.split(":", 2);
         }
-        return HttpStatus.NOT_FOUND;
+        else return null;
+    }
+
+    @RequestMapping(value = "/check", method = RequestMethod.POST)
+    public ResponseEntity checkMember(@RequestHeader("Authorization") String auth){
+        String[] values = getFromBASE64(auth);
+        if (values != null){
+            String account = values[0];
+            String password = values[1];
+            Member memberExist = this.memberService.getMemberByAccount(account);
+            if(memberExist != null && password.equals(memberExist.getPassword())){
+                return new ResponseEntity(HttpStatus.OK);
+            }
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        else return new ResponseEntity(HttpStatus.UNAUTHORIZED);
     }
 
     @RequestMapping(value="/query/{id}", method= RequestMethod.GET)
@@ -44,13 +65,13 @@ public class MemberRestController {
     }
 
     @RequestMapping(value="/add", method= RequestMethod.POST)
-    public ResponseEntity<Member> addMember(@RequestBody Member member) {
+    public ResponseEntity addMember(@RequestBody Member member) {
         Member memberExist = memberService.getMemberById(member.getId());
         if (memberExist != null) {
-            return  new ResponseEntity<>(HttpStatus.CONFLICT);
+            return  new ResponseEntity(HttpStatus.CONFLICT);
         }else{
             memberService.addMember(member);
-            return new ResponseEntity<>(member,HttpStatus.CREATED);
+            return new ResponseEntity(HttpStatus.OK);
         }
     }
 

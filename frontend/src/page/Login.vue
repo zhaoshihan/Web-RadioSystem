@@ -1,38 +1,71 @@
 <template>
-  	<div class="login_page fillcontain">
-	  	<transition name="form-fade" mode="in-out">
-	  		<section class="form_contianer">
-		  		<div class="manage_tip">
-		  			<p>elm后台管理系统</p>
-		  		</div>
-		    	<form :model="loginForm" :rules="rules" ref="loginForm" @submit.prevent="checkStaff">
+	<section class="hero is-light is-fullheight">
+		<div class="hero-body">
+			<div class="container has-text-centered">
+				<div class="column is-4 is-offset-4">
+					<h3 class="title has-text-grey">Login</h3>
+					<p class="subtitle has-text-grey">Please login to proceed.</p>
+					<div class="box">
+						<form :model="loginForm" ref="loginForm" v-on:submit.prevent>
+							<div class="field">
+								<label for="account" class="label has-text-left">Account：</label>
+								<div class="control has-icons-left">
+									<input v-model="loginForm.account" type="text" class="input" id="account" name="account"
+										   placeholder="Username">
+									<span class="icon is-small is-left">
+									  <i class="fa fa-user"></i>
+									</span>
+								</div>
+							</div>
 
-					<div class="field">
-						<div class="control">
-							<label for="account" class="label">用户名：</label>
-							<input v-model="loginForm.account" type="text" class="input" id="account" name="account"
-									placeholder="Username">
-						</div>
-						<div class="control">
-							<label for="password" class="label">密码：</label>
-							<input v-model="loginForm.password" type="password" class="input" id="password" name="password"
-								   placeholder="Password">
-						</div>
-						<div class="control">
-							<button type="submit" class="submit_btn">登录</button>
-						</div>
+							<div class="field">
+								<label for="password" class="label has-text-left">Password：</label>
+								<div class="control has-icons-left">
+									<input v-model="loginForm.password" type="password" class="input" id="password" name="password"
+										   placeholder="Password">
+									<span class="icon is-small is-left">
+									  <i class="fa fa-lock"></i>
+									</span>
+								</div>
+							</div>
+
+							<div class="field">
+								<div class="control">
+									<label class="radio">
+										<input type="radio" v-model="loginForm.picked" value="member">
+										Member
+									</label>
+									<label class="radio">
+										<input type="radio" v-model="loginForm.picked" value="staff">
+										Staff
+									</label>
+								</div>
+							</div>
+							<p>选择的项是: {{loginForm.picked}}</p>
+							<div class="field">
+								<div class="control has-text-centered">
+									<button class="button is-success" @click="login">Log In</button>&nbsp;&nbsp;&nbsp;&nbsp;
+									<button class="button is-link" @click="register">Sign Up</button>
+								</div>
+							</div>
+						</form>
 					</div>
-				</form>
-				<p class="tip">温馨提示：</p>
-				<p class="tip">未登录过的新用户，自动注册</p>
-				<p class="tip">注册过的用户可凭账号密码登录</p>
-	  		</section>
-	  	</transition>
-  	</div>
+					<p class="has-text-link">
+						<a href="../">Sign Up</a> &nbsp;·&nbsp;
+						<a href="../">Forgot Password</a> &nbsp;·&nbsp;
+						<a href="../">Need Help?</a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</section>
 </template>
 
 <script>
 	import Axios from 'axios';
+	import 'bulma/css/bulma.css'
+	import 'font-awesome/css/font-awesome.min.css'
+	Axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 	export default {
 	    data(){
@@ -40,60 +73,68 @@
 				loginForm: {
 					account: '',
 					password: '',
-				},
-				rules: {
-					username: [
-			            { required: true, message: '请输入用户名', trigger: 'blur' },
-			        ],
-					password: [
-						{ required: true, message: '请输入密码', trigger: 'blur' }
-					],
+					picked: 'member',
 				},
 			}
 		},
 		methods: {
-			checkStaff: function () {
-				Axios.defaults.headers.post['Content-Type'] = 'application/json';
-				var formData = JSON.stringify(this.loginForm)
-				console.log(this.loginForm)
-				alert(this.loginForm.account + this.loginForm.password)
-				Axios({
-					method: 'post',
-					url: '/staff/check/',
-					baseURL: 'http://localhost:8082',
-					params: this.loginForm
-				}).then(response=> {
-					console.log(response)
-					console.log(response.status)
-					alert("login success")
-					this.$router.push('staff_home')
-				})
-
-				// Axios.post("http://localhost:8082/staff/check/", {
-				// 	params:{
-				// 		account: "zsh",
-				// 		password:"123"
-				// 	}
-				// }).then (response=>{
-				// 	console.log(response)
-				// 	alert(response)
-				// 	let status = response.status
-				// 	// if (status === 302) {
-				// 	// 	this.$message({
-				// 	// 		type: 'success',
-				// 	// 		message: '登录成功'
-				// 	// 	});
-				// 	// 	this.$router.push('/StaffHome')
-				// 	// } else {
-				// 	// 	this.$notify.error({
-				// 	// 		title: '错误',
-				// 	// 		message: '请输入正确的用户名密码',
-				// 	// 		offset: 100
-				// 	// 	});
-				// 	// }
-				//
-				// })
+	    	validateForm: function(){
+				if (typeof this.loginForm.account == "undefined" ||
+						this.loginForm.account == null ||
+						this.loginForm.account === "") {
+					alert("account is null!")
+					return false;
+				}
+				if (typeof this.loginForm.password == "undefined" ||
+						this.loginForm.password == null ||
+						this.loginForm.password === "") {
+					alert("password is null!")
+					return false;
+				}
+				return true;
 			},
+
+			login: function () {
+				if(this.validateForm()){
+					/* tmpUrl = "/member/check" or "/staff/check" */
+					let tmpUrl = "/" + this.loginForm.picked + "/check"
+					// var formData = JSON.stringify(this.loginForm)
+					console.log(this.loginForm)
+					Axios({
+						method: 'post',
+						url: tmpUrl,
+						baseURL: 'http://localhost:8082',
+						auth: {
+							username: this.loginForm.account,
+							password: this.loginForm.password,
+						},
+						// params: this.loginForm
+					}).then(response=> {
+						console.log("In then method")
+						console.log(response)
+						alert("login status: " + response.status)
+						let pushUrl = "/" + this.loginForm.picked + "_home"
+						this.$router.push(pushUrl)
+					}).catch(error=>{
+						console.warn("In catch method")
+						console.warn(error)
+						alert(error)
+					})
+				}
+			},
+			register:function () {
+				alert("register function: " + this.loginForm.picked)
+				if(this.loginForm.picked === "staff"){
+					this.$router.push('/register_staff')
+				}
+				else if(this.loginForm.picked === "member"){
+					this.$router.push('/register_member')
+				}
+				else{
+					alert("radio select error!")
+				}
+
+			}
 		}
 	}
 </script>

@@ -17,7 +17,7 @@
 </template>
 
 <script>
-    import UserList from '../component/UserList.vue'
+    import UserList from '../component/MemberList.vue'
     import AddUser from '../component/AddUser.vue'
     import Top from '../component/Top.vue'
     import SideBar from '../component/SideBar.vue'
