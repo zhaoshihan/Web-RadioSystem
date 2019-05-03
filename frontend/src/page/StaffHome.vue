@@ -9,7 +9,7 @@
                 <div class="column">
 
 <!--                    <router-view></router-view>-->
-                    <member-list></member-list>
+                    <product-list></product-list>
                 </div>
             </div>
         </div>
@@ -18,6 +18,7 @@
 
 <script>
     import MemberList from '../component/MemberList.vue'
+    import ProductList from '../component/ProductList'
     import Top from '../component/Top.vue'
     import SideBar from '../component/SideBar.vue'
 
@@ -25,8 +26,9 @@
         name: 'StaffHome',
         components:{
             Top,
-            MemberList: MemberList,
-            SideBar
+            MemberList,
+            ProductList,
+            SideBar,
         },
         data () {
             return {

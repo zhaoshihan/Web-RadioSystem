@@ -11,7 +11,9 @@
                         <p class="level-item subtitle">{{key}}:</p>
                     </div>
                     <div class="level-right">
-                        <p class="level-item subtitle">{{value}}</p>
+                        <p v-if="value.length >= 20" class="level-item">{{value}}</p>
+                        <p v-else-if="value instanceof Date" class="level-item">{{value}}</p>
+                        <p v-else class="level-item subtitle">{{value}}</p>
                     </div>
                 </div>
         </i-modal>

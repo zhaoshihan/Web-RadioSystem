@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
-// import iView from 'iview'
+
 import 'iview/dist/styles/iview.css';
 import 'bulma/css/bulma.css'
 import 'font-awesome/css/font-awesome.min.css'
@@ -79,9 +79,10 @@ const store = new Vuex.Store({
 
 })
 
-import { Button, Modal } from 'iview'
+import { Button, Modal, Icon } from 'iview'
 Vue.component("Button", Button)
 Vue.component("Modal", Modal)
+Vue.component("Icon", Icon)
 
 new Vue({
     el: '#app',

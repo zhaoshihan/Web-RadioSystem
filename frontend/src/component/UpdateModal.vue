@@ -12,6 +12,8 @@
                 </div>
                 <div class="level-right">
                     <p v-if="key === 'id'" class="level-item subtitle">{{value}}</p>
+                    <input v-else-if="value instanceof Number" type="number" class="input" :id="key" :name="key" :placeholder="value">
+                    <input v-else-if="value instanceof Date" type="date" class="input" :id="key" :name="key">
                     <input v-else type="text" class="input" :id="key" :name="key" :placeholder="value">
                 </div>
             </div>

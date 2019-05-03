@@ -11,7 +11,8 @@
                     <p class="level-item subtitle">{{key}}:</p>
                 </div>
                 <div class="level-right">
-                    <input v-if="typeof value === 'number'" type="number" class="input" :name="key">
+                    <input v-if="value.name === 'Number'" type="number" class="input" :name="key" placeholder="1">
+                    <input v-else-if="value.name === 'Date'" type="date" class="input" :name="key">
                     <input v-else type="text" class="input" :name="key" :placeholder="key">
                 </div>
             </div>
@@ -36,6 +37,11 @@
             cancel () {
                 this.$Message.info('Clicked cancel');
             }
+        },
+        computed: {
+            // nowDate:function() {
+            //     return Date()
+            // }
         }
     }
 </script>
