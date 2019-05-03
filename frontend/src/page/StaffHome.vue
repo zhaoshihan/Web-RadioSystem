@@ -9,7 +9,7 @@
                 <div class="column">
 
 <!--                    <router-view></router-view>-->
-                    <user-list></user-list>
+                    <member-list></member-list>
                 </div>
             </div>
         </div>
@@ -17,14 +17,17 @@
 </template>
 
 <script>
-    import UserList from '../component/MemberList.vue'
-    import AddUser from '../component/AddUser.vue'
+    import MemberList from '../component/MemberList.vue'
     import Top from '../component/Top.vue'
     import SideBar from '../component/SideBar.vue'
 
     export default {
         name: 'StaffHome',
-        components:{Top,UserList,AddUser,SideBar},
+        components:{
+            Top,
+            MemberList: MemberList,
+            SideBar
+        },
         data () {
             return {
 

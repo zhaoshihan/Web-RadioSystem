@@ -94,8 +94,6 @@
 
 <script>
     import Axios from 'axios';
-    import 'bulma/css/bulma.css'
-    import 'font-awesome/css/font-awesome.min.css'
     Axios.defaults.headers.post['Content-Type'] = 'application/json';
 
     export default {

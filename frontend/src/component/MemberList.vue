@@ -19,10 +19,10 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="member in memberList" :key="memberList.id">
+                    <tr v-for="member in memberList" :id="member.id">
                         <td>{{member.id}}</td>
                         <td>{{member.name}}</td>
-                        <td>{{member.gender}}</td>
+                        <td>{{showGender(member.gender)}}</td>
                         <td>{{member.phoneNumber}}</td>
 <!--                        <td>{{member.email}}</td>-->
 <!--                        <td>{{member.postCode}}</td>-->
@@ -30,13 +30,13 @@
 <!--                        <td>{{member.address}}</td>-->
                         <td>{{member.account}}</td>
                         <td>{{member.password}}</td>
-                        <td><button class="button">Details</button></td>
-                        <td><button class ="button">Update</button></td>
-                        <td><button class ="button is-primary" v-on:click="deleteMember(user.id)">Delete</button></td>
+                        <td><detail-modal :instance="member"></detail-modal></td>
+                        <td><update-modal :instance="member"></update-modal></td>
+                        <td><delete-modal :instance="member"></delete-modal></td>
                     </tr>
                     </tbody>
                     <tfoot>
-                        <button class ="button">Add</button>
+                        <tr><add-modal :instance="memberInstance"></add-modal></tr>
                     </tfoot>
                 </table>
             </div>
@@ -44,22 +44,31 @@
 
 <script>
 import Axios from 'axios';
-import 'bulma/css/bulma.css'
+import detailModal from './DetailsModal'
+import updateModal from './UpdateModal'
+import deleteModal from './DeleteModal'
+import AddModal from "./AddModal";
 
 export default {
+    components:{
+        AddModal,
+        detailModal,
+        updateModal,
+        deleteModal,
+    },
     data(){
         return {
             memberInstance: {
-                id: '',
+                id: 0,
                 name: '',
-                gender:'',
-                phoneNumber:'',
-                email:'',
-                postCode:'',
-                city:'',
-                address:'',
-                account:'',
-                password:''
+                gender: '',
+                phoneNumber: '',
+                email: '',
+                postCode: '',
+                city: '',
+                address: '',
+                account: '',
+                password: '',
             },
             memberList:[]
         }
@@ -79,6 +88,20 @@ export default {
              Axios.delete("http://localhost:8082/rest/member/"+id).then(response=>{
                 console.log(response)
              });
+        },
+        showGender:function (gender) {
+            console.log(gender)
+            console.log(typeof gender)
+
+            if (gender === 'm') {
+                return "Gentleman"
+            }
+            else if(gender === 'f') {
+                return "Lady"
+            }
+            else{
+                return 'Null'
+            }
         }
     }
 

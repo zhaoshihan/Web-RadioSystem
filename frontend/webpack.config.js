@@ -32,12 +32,19 @@ module.exports = {
       },
       {
         test: /\.vue$/,
-        loader: 'vue-loader',
-        options: {
-          loaders: {
+        use: [
+          {
+            loader: 'vue-loader',
+            options: {
+            }
+          },
+          {
+            loader: 'iview-loader',
+            options: {
+              prefix: true
+            }
           }
-          // other vue-loader options go here
-        }
+        ]
       },
       {
         test: /\.js$/,

@@ -1,15 +1,20 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
+// import iView from 'iview'
+import 'iview/dist/styles/iview.css';
+import 'bulma/css/bulma.css'
+import 'font-awesome/css/font-awesome.min.css'
 import App from './App'
 
 Vue.use(VueRouter);
 Vue.use(Vuex);
+// Vue.use(iView);
 
 const routes = [
     {
         path: '/',
-        redirect: '/login'
+        redirect: '/staff_home'
     },
     {
         path: '/login',
@@ -74,6 +79,9 @@ const store = new Vuex.Store({
 
 })
 
+import { Button, Modal } from 'iview'
+Vue.component("Button", Button)
+Vue.component("Modal", Modal)
 
 new Vue({
     el: '#app',
