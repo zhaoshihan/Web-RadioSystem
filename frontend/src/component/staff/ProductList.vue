@@ -35,11 +35,11 @@
 </template>
 
 <script>
-    import Axios from 'axios';
-    import detailModal from './DetailsModal'
-    import updateModal from './UpdateModal'
-    import deleteModal from './DeleteModal'
-    import AddModal from "./AddModal";
+    import Axios from '_axios@0.18.0@axios/index';
+    import detailModal from '../common/DetailsModal'
+    import updateModal from '../common/UpdateModal'
+    import deleteModal from '../common/DeleteModal'
+    import AddModal from "../common/AddModal";
 
     export default {
         components: {

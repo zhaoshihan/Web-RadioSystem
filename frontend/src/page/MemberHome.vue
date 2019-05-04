@@ -13,29 +13,29 @@
 </template>
 
 <script>
-    import MemberList from '../component/staff/MemberList.vue'
-    import ProductList from '../component/staff/ProductList'
-    import Top from '../component/common/Top.vue'
-    import SideBar from '../component/staff/StaffSideBar.vue'
+    import Top from '../component/common/Top'
+    import SideBar from '../component/member/MemberSideBar'
+    import ProductDisplay from '../component/member/ProductDisplay'
+    import Cart from '../component/member/Cart'
 
     export default {
-        name: 'StaffHome',
         components:{
             Top,
             SideBar,
-            MemberList,
-            ProductList,
+            ProductDisplay,
+            Cart,
         },
-        data () {
-            return {
-                currentView: 'ProductList',
+        data(){
+            return{
+                currentView: 'ProductDisplay'
             }
         },
         methods:{
             handleChangeBar:function (name) {
-                this.currentView = name
+                this.currentView = name;
             }
         }
+
     }
 </script>
 
