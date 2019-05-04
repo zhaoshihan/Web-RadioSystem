@@ -8,7 +8,7 @@
                 <a>Menu</a>
                 <ul>
                     <li><a @click="chooseProductDisplay">Products</a></li>
-                    <li><a @click="chooseCart">Cart<span v-if="cartList.length">{{ cartList.length }}</span></a></li>
+                    <li><a @click="chooseCart">Cart<span v-if="cartList.length">{{cartList.length }}</span></a></li>
                     <li><a @click="chooseOrderList">Orders</a></li>
                 </ul>
             </li>
@@ -18,10 +18,10 @@
 
 <script>
     export default {
+        props:{
+            cartList:Array,
+        },
         computed: {
-            cartList () {
-                return this.$store.state.cartList;
-            }
         },
         methods:{
             chooseProductDisplay(){

@@ -35,7 +35,7 @@
 </template>
 
 <script>
-    import Axios from '_axios@0.18.0@axios/index';
+    import Axios from 'axios';
     import detailModal from '../common/DetailsModal'
     import updateModal from '../common/UpdateModal'
     import deleteModal from '../common/DeleteModal'

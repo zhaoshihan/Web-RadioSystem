@@ -38,13 +38,6 @@ const router = [
         },
         component: (resolve) => require(['./page/MemberHome.vue'], resolve)
     },
-    {
-        path: '/member_home/product/:id',
-        meta: {
-            title: '商品详情'
-        },
-        component: (resolve) => require(['./page/ProductDetails.vue'], resolve)
-    }
     // {
     //     path: '*',
     //     redirect: '/login'

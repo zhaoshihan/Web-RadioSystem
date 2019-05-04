@@ -52,16 +52,12 @@
     </div>
 </template>
 <script>
-    // import product_data from '../product.js';
-
     export default {
-        mounted(){
-
+        props:{
+            cartList:Array,
+            productList:Array,
         },
         computed: {
-            cartList () {
-                return this.$store.state.cartList;
-            },
             productDictList () {
                 const dict = {};
                 this.productList.forEach(item => {
@@ -86,7 +82,7 @@
         },
         data () {
             return {
-                productList: product_data,
+                // productList: product_data,
                 promotionCode: '',
                 promotion: 0
             }
@@ -94,14 +90,25 @@
         methods: {
             handleCount (index, count) {
                 if (count < 0 && this.cartList[index].count === 1) return;
-                this.$store.commit('editCartCount', {
+                let payload = {
                     id: this.cartList[index].id,
                     count: count
-                });
+                }
+                this.editCartCount(payload)
             },
+            editCartCount (payload) {
+                const product = this.cartList.find(item => item.id === payload.id);
+                product.count += payload.count;
+            },
+
             handleDelete (index) {
-                this.$store.commit('deleteCart', this.cartList[index].id);
+                this.deleteCart(this.cartList[index].id)
             },
+            deleteCart (id) {
+                const index = this.cartList.findIndex(item => item.id === id);
+                this.cartList.splice(index, 1);
+            },
+
             handleCheckCode () {
                 if (this.promotionCode === '') {
                     window.alert('请输入优惠码');
@@ -114,9 +121,16 @@
                 }
             },
             handleOrder () {
-                this.$store.dispatch('buy').then(() => {
-                    window.alert('购买成功');
-                })
+                // 真实环境应通过 ajax 提交购买请求后再清空购物列表
+                return new Promise(resolve=> {
+                    setTimeout(() => {
+                        this.emptyCart()
+                        resolve();
+                    }, 500)
+                });
+            },
+            emptyCart () {
+                this.cartList = [];
             }
         }
     }

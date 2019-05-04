@@ -13,8 +13,14 @@
                     <li class="subtitle is-6">{{info.type}}</li>
                     <li class="subtitle is-6">{{info.habitat}}</li>
                     <li>
-                        <a class="button is-success" @click.prevent="handleCart">加入购物车</a>
-
+                        <div class="level">
+                            <div class="level-left level-item">
+                                <detail-modal :instance="info"></detail-modal>
+                            </div>
+                            <div class="level-right level-item">
+                                <button class="button is-success" @click.prevent="handleCart">Add Cart</button>
+                            </div>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -23,23 +29,30 @@
 </template>
 
 <script>
+    import detailModal from '../common/DetailsModal'
     export default {
         props: {
-            info: Object
+            info: Object,
+            cartList:Array,
+        },
+        components:{
+          detailModal,
         },
         data () {
             return {
-                colors: {
-                    '白色': '#ffffff',
-                    '金色': '#dac272',
-                    '蓝色': '#233472',
-                    '红色': '#f2352e'
-                }
             }
         },
         methods: {
             handleCart () {
-                this.$store.commit('addCart', this.info.id);
+                const isAdded = this.cartList.find(item => item.id === this.info.id);
+                if (isAdded) {
+                    isAdded.count ++;
+                } else {
+                    this.cartList.push({
+                        id: this.info.id,
+                        count: 1
+                    })
+                }
             }
         }
     };

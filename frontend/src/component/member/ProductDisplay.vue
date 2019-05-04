@@ -3,7 +3,7 @@
         <div class="list-control">
             <div class="field">
                 <div class="tags are-medium">
-                    <span class="tag is-white">类型：</span>
+                    <span class="tag is-white">Type：</span>
                     <a
                             class="tag"
                             :class="{on: item === filterTypes}"
@@ -13,7 +13,7 @@
             </div>
             <div class="field">
                 <div class="tags are-medium">
-                    <span class="tag is-white">国家：</span>
+                    <span class="tag is-white">Country：</span>
                     <a
                             class="tag"
                             :class="{on: item === filterHabitats}"
@@ -23,16 +23,16 @@
             </div>
             <div class="field">
                 <div class="tags are-medium">
-                    <span class="tag is-white">排序：</span>
+                    <span class="tag is-white">Order：</span>
                     <a
                             class="tag"
                             :class="{on: order === ''}"
-                            @click="handleOrderDefault">默认</a>
+                            @click="handleOrderDefault">Default</a>
                     <a
                             class="tag"
                             :class="{on: order.indexOf('cost') > -1}"
                             @click="handleOrderCost">
-                        价格
+                        Price
                         <template v-if="order === 'cost-asc'">↑</template>
                         <template v-if="order === 'cost-desc'">↓</template>
                     </a>
@@ -41,7 +41,7 @@
         </div>
         <div class="selection">
             <div class="row columns is-multiline">
-                <product-card v-for="item in filteredAndOrderedList" :info="item" :key="item.id"></product-card>
+                <product-card v-for="item in filteredAndOrderedList" :info="item" :key="item.id" :cart-list="cartList"></product-card>
             </div>
         </div>
     </div>
@@ -50,19 +50,22 @@
 <script>
     import ProductCard from './ProductCard'
     export default {
+        props:{
+            productList:Array,
+            cartList:Array,
+        },
         components: { ProductCard },
         computed: {
-            list () {
-                return this.$store.state.productList;
+            types() {
+                const types = this.productList.map(item => item.type);
+                return this.getFilterArray(types);
             },
-            types () {
-                return this.$store.getters.types;
-            },
-            habitats () {
-                return this.$store.getters.habitats;
+            habitats() {
+                const habitats = this.productList.map(item => item.habitat);
+                return this.getFilterArray(habitats);
             },
             filteredAndOrderedList () {
-                let list = [...this.list];
+                let list = [...this.productList];
                 // 按类型过滤
                 if (this.filterTypes !== '') {
                     list = list.filter(item => item.type === this.filterTypes);
@@ -90,6 +93,18 @@
             }
         },
         methods: {
+            getFilterArray (array) {
+                const res = [];
+                const json = {};
+                for (let i = 0; i < array.length; i++){
+                    const _self = array[i];
+                    if(!json[_self]){
+                        res.push(_self);
+                        json[_self] = 1;
+                    }
+                }
+                return res;
+            },
             handleFilterTypes (type) {
                 if (this.filterTypes === type) {
                     this.filterTypes = '';
@@ -115,9 +130,6 @@
                 }
             }
         },
-        mounted () {
-            this.$store.dispatch('getProductList');
-        }
     }
 </script>
 
