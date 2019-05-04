@@ -10,7 +10,6 @@ import App from './App'
 
 Vue.use(VueRouter);
 Vue.use(Vuex);
-// Vue.use(iView);
 
 const RouterConfig = {
     mode: 'history',

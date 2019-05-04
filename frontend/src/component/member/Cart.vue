@@ -1,54 +1,69 @@
 <template>
-    <div class="cart">
-        <div class="cart-header">
-            <div class="cart-header-title">购物清单</div>
-            <div class="cart-header-main">
-                <div class="cart-info">商品信息</div>
-                <div class="cart-price">单价</div>
-                <div class="cart-count">数量</div>
-                <div class="cart-cost">小计</div>
-                <div class="cart-delete">删除</div>
-            </div>
-        </div>
-        <div class="cart-content">
-            <div class="cart-content-main" v-for="(item, index) in cartList">
-                <div class="cart-info">
-                    <img :src="productDictList[item.id].image">
-                    <span>{{ productDictList[item.id].name }}</span>
-                </div>
-                <div class="cart-price">¥ {{ productDictList[item.id].price }}</div>
-                <div class="cart-count">
-                    <span class="cart-control-minus" @click="handleCount(index, -1)">-</span>
-                    {{ item.count }}
-                    <span class="cart-control-add" @click="handleCount(index, 1)">+</span>
-                </div>
-                <div class="cart-cost">¥ {{ productDictList[item.id].price * item.count }}</div>
-                <div class="cart-delete">
-                    <span class="cart-control-delete" @click="handleDelete(index)">删除</span>
-                </div>
-            </div>
-            <div class="cart-empty" v-if="!cartList.length">购物车为空</div>
-        </div>
-        <div class="cart-promotion" v-show="cartList.length">
-            <span>使用优惠码：</span>
-            <input type="text" v-model="promotionCode">
-            <span class="cart-control-promotion" @click="handleCheckCode">验证</span>
-        </div>
-        <div class="cart-footer" v-show="cartList.length">
-            <div class="cart-footer-desc">
-                共计 <span>{{ countAll }}</span> 件商品
-            </div>
-            <div class="cart-footer-desc">
-                应付总额 <span>¥ {{ costAll - promotion }}</span>
-                <br>
-                <template v-if="promotion">
-                    （优惠 <span>¥ {{ promotion }}</span>）
-                </template>
-            </div>
-            <div class="cart-footer-desc">
-                <div class="cart-control-order" @click="handleOrder">现在结算</div>
-            </div>
-        </div>
+    <div class="panel">
+        <!-- Default panel contents -->
+        <div class="panel-heading">购物清单</div>
+        <!-- Table -->
+        <table class="table is-fullwidth">
+            <thead>
+            <tr>
+                <th>商品信息</th>
+                <th class="has-text-centered">单价</th>
+                <th class="has-text-centered">数量</th>
+                <th class="has-text-centered">小计</th>
+                <th class="has-text-centered">删除</th>
+            </tr>
+            </thead>
+            <tfoot>
+                <tr class="level">
+                    <p class="level-item">
+                        共计 <span class="tag is-white is-large">{{ countAll }}</span> 件商品
+                    </p>
+                    <p class="level-item">
+                        应付总额 <span class="tag is-white is-large">¥ {{ costAll - promotion }}</span>
+                        <span v-if="promotion">
+                            （优惠 <span class="tag is-white is-large">¥ {{ promotion }}</span>）
+                            </span>
+                    </p>
+                    <p class="level-item">
+                        <button class="button is-info" @click="handleOrder">现在结算</button>
+                    </p>
+                </tr>
+            </tfoot>
+            <tbody>
+                <tr v-for="(item, index) in cartList" :key="item.id">
+                    <td>
+                        <div class="tags">
+                            <figure class="image is-24x24">
+                                <img src="https://bulma.io/images/placeholders/24x24.png" alt="Image">
+                            </figure>
+                            <span class="has-text-left">{{ productDictList[item.id].name }}</span>
+                        </div>
+                    </td>
+                    <td>
+                        ¥ {{productDictList[item.id].price}}
+                    </td>
+                    <td>
+                        <a class="tag is-rounded" @click="handleCount(index, -1)">-</a>
+                        {{ item.count }}
+                        <a class="tag is-rounded" @click="handleCount(index, 1)">+</a>
+                    </td>
+                    <td>
+                        ¥ {{ productDictList[item.id].price * item.count }}
+                    </td>
+                    <td>
+                        <a class="button is-danger is-small" @click="handleDelete(index)">Delete</a>
+                    </td>
+                </tr>
+                <tr class="has-text-centered">
+                    <td class="cart-empty" v-if="!cartList.length">购物车为空</td>
+                    <td class="cart-promotion" v-show="cartList.length">
+                        <label>使用优惠码：</label>
+                        <input type="text" v-model="promotionCode">
+                        <button class="button is-small is-info" @click="handleCheckCode">验证</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </template>
 <script>
@@ -84,7 +99,7 @@
             return {
                 // productList: product_data,
                 promotionCode: '',
-                promotion: 0
+                promotion: 100
             }
         },
         methods: {

@@ -8,7 +8,7 @@
                 <a>Menu</a>
                 <ul>
                     <li><a @click="chooseProductDisplay">Products</a></li>
-                    <li><a @click="chooseCart">Cart<span v-if="cartList.length">{{cartList.length }}</span></a></li>
+                    <li><a @click="chooseCart">Cart&nbsp;<span v-if="cartList.length" class="tag">{{cartList.length}}</span></a></li>
                     <li><a @click="chooseOrderList">Orders</a></li>
                 </ul>
             </li>
@@ -38,5 +38,9 @@
 </script>
 
 <style scoped>
-
+    .tag{
+        background-color: #f2352e;
+        border: 1px solid #f2352e;
+        color: #fff;
+    }
 </style>

@@ -3,7 +3,7 @@
         <!-- Default panel contents -->
         <div class="panel-heading">Member Lists</div>
         <!-- Table -->
-        <table id ="member_tb" class="table">
+        <table class="table">
             <thead>
             <tr>
                 <th>ID</th>
