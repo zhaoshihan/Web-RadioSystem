@@ -4,12 +4,10 @@
             <top></top>
             <div class="columns">
                 <div class="column is-one-fifth">
-                    <side-bar></side-bar>
+                    <side-bar @changeBar="handleChangeBar"></side-bar>
                 </div>
                 <div class="column">
-
-<!--                    <router-view></router-view>-->
-                    <product-list></product-list>
+                    <component :is="currentView"></component>
                 </div>
             </div>
         </div>
@@ -20,19 +18,24 @@
     import MemberList from '../component/MemberList.vue'
     import ProductList from '../component/ProductList'
     import Top from '../component/Top.vue'
-    import SideBar from '../component/SideBar.vue'
+    import SideBar from '../component/StaffSideBar.vue'
 
     export default {
         name: 'StaffHome',
         components:{
             Top,
+            SideBar,
             MemberList,
             ProductList,
-            SideBar,
         },
         data () {
             return {
-
+                currentView: 'ProductList',
+            }
+        },
+        methods:{
+            handleChangeBar:function (name) {
+                this.currentView = name
             }
         }
     }

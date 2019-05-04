@@ -23,7 +23,7 @@
                 <td>{{product.director}}</td>
                 <td>{{product.date.toDateString()}}</td>
                 <td><detail-modal :instance="product"></detail-modal></td>
-                <td><update-modal :instance="product"></update-modal></td>
+                <td><update-modal :instance="product" target="product"></update-modal></td>
                 <td><delete-modal :instance="product"></delete-modal></td>
             </tr>
             </tbody>
@@ -51,16 +51,16 @@
         data() {
             return {
                 productInstance: {
-                    id: Number,
-                    type: String,
-                    name: String,
-                    price: Number,
-                    discount: Number,
-                    habitat: String,
-                    director: String,
-                    superStar: String,
-                    date: Date,
-                    description: String,
+                    id: 'Number',
+                    type: 'String',
+                    name: 'String',
+                    price: 'Number',
+                    discount: 'Number',
+                    habitat: 'String',
+                    director: 'String',
+                    superStar: 'String',
+                    date: 'Date',
+                    description: 'String',
                 },
                 productList: []
             }

@@ -23,7 +23,7 @@
                 <td>{{member.account}}</td>
                 <td>{{member.password}}</td>
                 <td><detail-modal :instance="member"></detail-modal></td>
-                <td><update-modal :instance="member"></update-modal></td>
+                <td><update-modal :instance="member" target="member"></update-modal></td>
                 <td><delete-modal :instance="member"></delete-modal></td>
             </tr>
             </tbody>
@@ -51,16 +51,16 @@
         data(){
             return {
                 memberInstance: {
-                    id: Number,
-                    name: String,
-                    gender: String,
-                    phoneNumber: String,
-                    email: String,
-                    postCode: String,
-                    city: String,
-                    address: String,
-                    account: String,
-                    password: String,
+                    id: 'Number',
+                    name: 'String',
+                    gender: 'String',
+                    phoneNumber: 'String',
+                    email: 'String',
+                    postCode: 'String',
+                    city: 'String',
+                    address: 'String',
+                    account: 'String',
+                    password: 'String',
                 },
                 memberList:[]
             }
@@ -80,9 +80,6 @@
         },
         methods:{
             showGender:function (gender) {
-                console.log(gender)
-                console.log(typeof gender)
-
                 if (gender === 'm') {
                     return "Gentleman"
                 }
