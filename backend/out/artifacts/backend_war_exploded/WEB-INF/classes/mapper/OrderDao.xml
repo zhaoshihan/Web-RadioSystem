@@ -6,6 +6,7 @@
 
     <select id="getOrderById" resultType="ssm.entity.Order" parameterType="int">select * from radio.`order` where id = #{id}</select>
     <select id="getAllOrders" resultType="ssm.entity.Order">select * from radio.`order`</select>
+    <select id="getOrderByMemberId" resultType="ssm.entity.Order" parameterType="int">select * from radio.`order` where memberID = #{memberId}</select>
     <insert id="addOrder" parameterType="ssm.entity.Order">insert into radio.`order` values(#{id}, #{productID}, #{memberID}, #{orderDate}, #{unitPrice}, #{amount}, #{sendDate}, #{sendAddress})</insert>
 </mapper>
 

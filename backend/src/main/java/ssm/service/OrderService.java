@@ -26,4 +26,9 @@ public class OrderService implements IOrderService{
     public boolean addOrder(Order order){
         return orderDao.addOrder(order) > 0;
     }
+
+    @Override
+    public List<Order> getOrderByMemberId(int memberId){
+        return orderDao.getOrderByMemberId(memberId);
+    }
 }

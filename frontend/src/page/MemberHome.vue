@@ -6,7 +6,7 @@
                 <side-bar @changeBar="handleChangeBar" :cart-list="cartList"></side-bar>
             </div>
             <div class="column">
-                <component :is="currentView" :product-list="productList" :cart-list="cartList"></component>
+                <component :is="currentView" :product-list="productList" :cart-list="cartList" @cleanCartList="handleCleanCartList"></component>
             </div>
         </div>
     </div>
@@ -50,7 +50,9 @@
             handleChangeBar:function (name) {
                 this.currentView = name;
             },
-
+            handleCleanCartList:function () {
+                this.cartList = []
+            }
         }
 
     }

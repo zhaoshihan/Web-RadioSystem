@@ -19,10 +19,10 @@
                         共计 <span class="tag is-white is-large">{{ countAll }}</span> 件商品
                     </p>
                     <p class="level-item">
-                        应付总额 <span class="tag is-white is-large">¥ {{ costAll - promotion }}</span>
-                        <span v-if="promotion">
-                            （优惠 <span class="tag is-white is-large">¥ {{ promotion }}</span>）
-                            </span>
+                        应付总额 <span class="tag is-white is-large">¥ {{ costAll }}</span>
+                        <span v-if="hasDiscount">
+                            （折后价 <span class="tag is-white is-large">¥ {{ discoutCostAll }}</span>）
+                        </span>
                     </p>
                     <p class="level-item">
                         <button class="button is-info" @click="handleOrder">现在结算</button>
@@ -67,12 +67,21 @@
     </div>
 </template>
 <script>
+    import Axios from 'axios'
+    Axios.defaults.headers.post['Content-Type'] = 'application/json';
+
     export default {
         props:{
             cartList:Array,
             productList:Array,
         },
         computed: {
+            getMemberID(){
+                return this.$store.state.currentUser['id']
+            },
+            getSendAddress(){
+                return this.$store.state.currentUser['address']
+            },
             productDictList () {
                 const dict = {};
                 this.productList.forEach(item => {
@@ -90,16 +99,43 @@
             costAll () {
                 let cost = 0;
                 this.cartList.forEach(item => {
-                    cost += this.productDictList[item.id].cost * item.count;
+                    cost += this.productDictList[item.id].price * item.count;
                 });
                 return cost;
+            },
+            discoutCostAll(){
+                let cost = 0;
+                this.cartList.forEach(item =>{
+                    cost += this.productDictList[item.id].discount * item.count;
+                })
+                return cost;
             }
+
         },
+        // Order entity示例：
+        // private int id;
+        // private int memberID;
+        // private int productID;
+        // private int amount;
+        // private int unitPrice;
+        // private Date orderDate;
+        // private Date sendDate;
+        // private String sendAddress;
         data () {
             return {
                 // productList: product_data,
                 promotionCode: '',
-                promotion: 100
+                hasDiscount: false,
+                orderInstance:{
+                    id:'',
+                    memberID:'',
+                    productID:'',
+                    amount:'',
+                    unitPrice:'',
+                    orderDate:'',
+                    sendDate:'',
+                    sendAddress:'',
+                }
             }
         },
         methods: {
@@ -132,21 +168,53 @@
                 if (this.promotionCode !== 'Vue.js') {
                     window.alert('优惠码验证失败');
                 } else {
-                    this.promotion = 500;
+                    this.hasDiscount = true;
                 }
             },
             handleOrder () {
-                // 真实环境应通过 ajax 提交购买请求后再清空购物列表
-                return new Promise(resolve=> {
-                    setTimeout(() => {
-                        this.emptyCart()
-                        resolve();
-                    }, 500)
+                let requestList = []
+                let timeStamp = (new Date()).valueOf() % 2147483648
+                this.cartList.forEach(item => {
+                    let newInstance = {}
+                    this.orderInstance.id = (timeStamp++) % 2147483648
+                    this.orderInstance.productID = item.id
+                    this.orderInstance.memberID = this.getMemberID
+                    this.orderInstance.orderDate = new Date()
+                    this.orderInstance.unitPrice = this.productDictList[item.id].price
+                    this.orderInstance.amount = item.count
+                    this.orderInstance.sendDate = new Date()
+                    this.orderInstance.sendAddress = this.getSendAddress
+                    Object.assign(newInstance, this.orderInstance)
+                    requestList.push(newInstance)
                 });
+                Axios({
+                    method: 'post',
+                    url: '/order/add',
+                    baseURL: 'http://localhost:8082',
+                    data: requestList
+                }).then(response=> {
+                    console.log("In then method")
+                    console.log(response)
+                    alert("orders add success")
+                    this.$emit('cleanCartList');
+                    // this.emptyCart()
+                }).catch(error=>{
+                    console.warn("In catch method")
+                    console.warn(error)
+                    alert(error)
+                })
+                // 真实环境应通过 ajax 提交购买请求后再清空购物列表
+                // return new Promise(resolve=> {
+                //     setTimeout(() => {
+                //         this.emptyCart()
+                //         resolve();
+                //     }, 500)
+                // });
             },
-            emptyCart () {
-                this.cartList = [];
-            }
+            // emptyCart () {
+            //     let len = this.cartList.length
+            //     this.cartList.splice(0, len)
+            // }
         }
     }
 </script>

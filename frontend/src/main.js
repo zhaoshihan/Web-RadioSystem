@@ -43,21 +43,21 @@ const store = new Vuex.Store({
     state:{
         isMember:false,
         isStaff:false,
-        user:null,
+        currentUser:null,
     },
     mutations:{
         memberLogin(state, payload){
             state.isMember = true;
-            state.user = payload;
+            state.currentUser = payload;
         },
         staffLogin(state,payload){
             state.isStaff = true;
-            state.user = payload;
+            state.currentUser = payload;
         },
         LogOut(state){
             state.isMember = false;
             state.isStaff = false;
-            state.user = null;
+            state.currentUser = null;
         }
     }
 });

@@ -6,15 +6,15 @@
                 title="Update of Data"
                 @on-ok="ok"
                 @on-cancel="cancel">
-            <div class="level" v-for="(value, key, index) in copyInstance">
+            <div class="level" v-for="(value, key, index) in instance">
                 <div class="level-left">
                     <p class="level-item subtitle">{{key}}:</p>
                 </div>
                 <div class="level-right">
                     <p v-if="key === 'id'" class="level-item subtitle">{{value}}</p>
-                    <input v-else-if="value instanceof Number" type="number" v-model="newInstance[key]" class="input">
-                    <input v-else-if="value instanceof Date" type="date" v-model="newInstance[key]" class="input">
-                    <input v-else type="text" v-model="newInstance[key]" class="input">
+                    <input v-else-if="value instanceof Number" type="number" v-model="instance[key]" class="input">
+                    <input v-else-if="value instanceof Date" type="date" v-model="instance[key]" class="input">
+                    <input v-else type="text" v-model="instance[key]" class="input">
                 </div>
             </div>
         </i-modal>

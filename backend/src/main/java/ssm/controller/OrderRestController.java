@@ -27,14 +27,28 @@ public class OrderRestController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public HttpStatus addOrder(@RequestBody Order order){
-        Order orderExist = orderService.getOrderById(order.getId());
-        if (orderExist != null) {
-            return  HttpStatus.CONFLICT;
-        }else{
-            orderService.addOrder(order);
-            return HttpStatus.CREATED;
+    public ResponseEntity addOrder(@RequestBody List<Order> orderList){
+        for (Order order: orderList){
+            Order orderExist = orderService.getOrderById(order.getId());
+            if (orderExist != null) {
+                return new ResponseEntity(HttpStatus.CONFLICT);
+            }else{
+                boolean result = orderService.addOrder(order);
+                if(!result){
+                    return new ResponseEntity(HttpStatus.FORBIDDEN);
+                }
+            }
         }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/query/{memberID}", method = RequestMethod.GET)
+    public ResponseEntity<List<Order>> getProductById(@PathVariable("memberID") int memberID){
+        List<Order> orders = orderService.getOrderByMemberId(memberID);
+        if (orders.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
 }

@@ -8,4 +8,5 @@ public interface IOrderDao {
     public Order getOrderById(int id);
     public List<Order> getAllOrders();
     public int addOrder(Order order);
+    public List<Order> getOrderByMemberId(int memberId);
 }
