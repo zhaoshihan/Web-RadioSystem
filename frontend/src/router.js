@@ -1,7 +1,8 @@
+import store from './main'
 const router = [
     {
         path: '/',
-        redirect: '/member_home'
+        redirect: '/login'
     },
     {
         path: '/login',
@@ -29,14 +30,30 @@ const router = [
         meta: {
             title: '职员首页'
         },
-        component: (resolve) => require(['./page/StaffHome.vue'], resolve)
+        component: (resolve) => require(['./page/StaffHome.vue'], resolve),
+        beforeEnter: (to, from, next) => {
+            if(store.state.isLogIn){
+                next()
+            }
+            else {
+                next('/login')
+            }
+        },
     },
     {
         path: '/member_home',
         meta: {
             title: '会员首页'
         },
-        component: (resolve) => require(['./page/MemberHome.vue'], resolve)
+        component: (resolve) => require(['./page/MemberHome.vue'], resolve),
+        beforeEnter: (to, from, next) => {
+            if(store.state.isLogIn){
+                next()
+            }
+            else {
+                next('/login')
+            }
+        },
     },
     // {
     //     path: '*',

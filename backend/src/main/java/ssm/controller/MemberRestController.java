@@ -32,18 +32,20 @@ public class MemberRestController {
     }
 
     @RequestMapping(value = "/check", method = RequestMethod.POST)
-    public ResponseEntity checkMember(@RequestHeader("Authorization") String auth){
+    public ResponseEntity<Member> checkMember(@RequestHeader("Authorization") String auth){
         String[] values = getFromBASE64(auth);
         if (values != null){
             String account = values[0];
             String password = values[1];
             Member memberExist = this.memberService.getMemberByAccount(account);
             if(memberExist != null && password.equals(memberExist.getPassword())){
-                return new ResponseEntity(HttpStatus.OK);
+                memberExist.setAccount(null);
+                memberExist.setPassword(null);
+                return new ResponseEntity<>(memberExist,HttpStatus.OK);
             }
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        else return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        else return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     @RequestMapping(value="/query/{id}", method= RequestMethod.GET)
@@ -70,25 +72,35 @@ public class MemberRestController {
         if (memberExist != null) {
             return  new ResponseEntity(HttpStatus.CONFLICT);
         }else{
-            memberService.addMember(member);
-            return new ResponseEntity(HttpStatus.OK);
+            boolean result = memberService.addMember(member);
+            if (result){
+                return new ResponseEntity(HttpStatus.OK);
+            }
+            else{
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
         }
     }
 
-    @RequestMapping(value="/delete", method= RequestMethod.DELETE)
-    public ResponseEntity<Member> deleteMember(@RequestBody Member member) {
+    @RequestMapping(value="/delete", method= RequestMethod.POST)
+    public ResponseEntity deleteMember(@RequestBody Member member) {
         Member memberExist = memberService.getMemberById(member.getId());
         if (memberExist != null) {
-            memberService.deleteMember(member);
-            return new ResponseEntity<>(member,HttpStatus.NO_CONTENT);
+            boolean result = memberService.deleteMember(member);
+            if (result){
+                return new ResponseEntity(HttpStatus.OK);
+            }
+            else{
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
     }
 
-    @RequestMapping(value = "/update/{id}",method = RequestMethod.PUT)
-    public ResponseEntity<Member> updateUser(@PathVariable("id") int id,@RequestBody Member member){
-        Member currentMember = memberService.getMemberById(id);
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public ResponseEntity updateMember(@RequestBody Member member){
+        Member currentMember = memberService.getMemberById(member.getId());
         HttpStatus httpStatus;
         if (currentMember != null) {
             currentMember.setAccount(member.getAccount());
@@ -97,11 +109,11 @@ public class MemberRestController {
             if (result) {
                 httpStatus = HttpStatus.OK;
             } else {
-                httpStatus = HttpStatus.NO_CONTENT;
+                httpStatus = HttpStatus.FORBIDDEN;
             }
-            return new ResponseEntity<>(currentMember, httpStatus);
+            return new ResponseEntity(httpStatus);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
     }
 }

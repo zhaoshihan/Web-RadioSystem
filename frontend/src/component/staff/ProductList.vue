@@ -72,12 +72,8 @@
                 baseURL: 'http://localhost:8082',
             }).then(response => {
                 console.log(response)
-                // for (let item in response.data){
-                //     console.log(item.date)
-                //     item.date = new Date(item.date).toDateString()
-                // }
                 response.data.forEach(item=>{
-                    console.log(item.date);
+                    // console.log(item.date);
                     item.date = new Date(item.date)
                 });
                 this.productList = response.data

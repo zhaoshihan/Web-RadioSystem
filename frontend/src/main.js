@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
 import Routers from './router'
+// import Store from './store'
 
 import 'iview/dist/styles/iview.css';
 import 'bulma/css/bulma.css'
@@ -38,11 +39,23 @@ router.afterEach((to, from, next) => {
 // private String superStar;
 // private Date date;
 // private String description;
-
 const store = new Vuex.Store({
-
+    state:{
+        isLogIn:false,
+        user:null,
+    },
+    mutations:{
+        LogIn(state, payload){
+            state.isLogIn = payload.bool;
+            state.user = payload.info;
+        },
+        LogOut(state){
+            state.isLogIn = false;
+            state.user = null;
+        }
+    }
 });
-
+export default store
 
 import { Button, Modal, Icon } from 'iview'
 Vue.component("Button", Button)

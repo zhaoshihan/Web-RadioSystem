@@ -33,18 +33,20 @@ public class StaffRestController {
     }
 
     @RequestMapping(value = "/check", method = RequestMethod.POST)
-    public ResponseEntity checkStaff(@RequestHeader("Authorization") String auth){
+    public ResponseEntity<Staff> checkStaff(@RequestHeader("Authorization") String auth){
         String[] values = getFromBASE64(auth);
         if (values != null){
             String account = values[0];
             String password = values[1];
             Staff staffExist = this.staffService.getStaffByAccount(account);
             if(staffExist != null && password.equals(staffExist.getPassword())){
-                return new ResponseEntity(HttpStatus.OK);
+                staffExist.setAccount(null);
+                staffExist.setPassword(null);
+                return new ResponseEntity<>(staffExist,HttpStatus.OK);
             }
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        else return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        else return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     @RequestMapping(value="/query/{id}", method= RequestMethod.GET)

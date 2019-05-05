@@ -24,14 +24,12 @@
 
         <div class="navbar-end">
             <div class="navbar-item">
-                <div class="buttons">
-                    <a class="button is-primary">
-                        <strong>Sign up</strong>
-                    </a>
-                    <a class="button is-light">
-                        Log in
-                    </a>
-                </div>
+                <p class="subtitle">Welcome, {{getUserName}}</p>
+            </div>
+            <div class="navbar-item">
+                <a class="button is-primary" @click="logOut">
+                    <strong>Log Out</strong>
+                </a>
             </div>
         </div>
     </nav>
@@ -39,7 +37,17 @@
 
 <script>
     export default {
-
+        computed:{
+            getUserName(){
+                return this.$store.state.user['name'];
+            }
+        },
+        methods:{
+            logOut(){
+                this.$store.commit('LogOut')
+                this.$router.push('/login')
+            }
+        }
     }
 </script>
 

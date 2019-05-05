@@ -109,8 +109,9 @@
 						// params: this.loginForm
 					}).then(response=> {
 						console.log("In then method")
-						console.log(response)
-						alert("login status: " + response.status)
+						console.log(response.data)
+						this.$store.commit('LogIn', {bool:true, info: response.data})
+						// console.log(this.$store.state.user)
 						let pushUrl = "/" + this.loginForm.picked + "_home"
 						this.$router.push(pushUrl)
 					}).catch(error=>{
