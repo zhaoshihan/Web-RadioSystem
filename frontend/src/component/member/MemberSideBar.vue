@@ -18,10 +18,10 @@
 
 <script>
     export default {
-        props:{
-            cartList:Array,
-        },
         computed: {
+            cartList(){
+                return this.$store.state.member.cartList
+            }
         },
         methods:{
             chooseProductDisplay(){

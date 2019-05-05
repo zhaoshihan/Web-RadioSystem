@@ -18,7 +18,7 @@
                                 <detail-modal :instance="info"></detail-modal>
                             </div>
                             <div class="level-right level-item">
-                                <button class="button is-success" @click.prevent="handleCart">Add Cart</button>
+                                <button class="button is-success" @click.prevent="handleAddToCart">Add Cart</button>
                             </div>
                         </div>
                     </li>
@@ -33,7 +33,6 @@
     export default {
         props: {
             info: Object,
-            cartList:Array,
         },
         components:{
           detailModal,
@@ -43,16 +42,9 @@
             }
         },
         methods: {
-            handleCart () {
-                const isAdded = this.cartList.find(item => item.id === this.info.id);
-                if (isAdded) {
-                    isAdded.count ++;
-                } else {
-                    this.cartList.push({
-                        id: this.info.id,
-                        count: 1
-                    })
-                }
+            // 加入购物车
+            handleAddToCart () {
+                this.$store.commit('addCart', this.info.id);
             }
         }
     };

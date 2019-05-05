@@ -25,7 +25,7 @@
                         </span>
                     </p>
                     <p class="level-item">
-                        <button class="button is-info" @click="handleOrder">现在结算</button>
+                        <button v-if="cartList.length" class="button is-info" @click="handleOrder">现在结算</button>
                     </p>
                 </tr>
             </tfoot>
@@ -69,18 +69,22 @@
 <script>
     import Axios from 'axios'
     Axios.defaults.headers.post['Content-Type'] = 'application/json';
-
     export default {
-        props:{
-            cartList:Array,
-            productList:Array,
-        },
         computed: {
+            cartList(){
+                return this.$store.state.member.cartList
+            },
+            productList(){
+                return this.$store.state.member.productList
+            },
+            hasDiscount(){
+                return this.$store.state.member.hasDiscount
+            },
             getMemberID(){
-                return this.$store.state.currentUser['id']
+                return this.$store.state.global.currentUser['id']
             },
             getSendAddress(){
-                return this.$store.state.currentUser['address']
+                return this.$store.state.global.currentUser['address']
             },
             productDictList () {
                 const dict = {};
@@ -112,54 +116,32 @@
             }
 
         },
-        // Order entity示例：
-        // private int id;
-        // private int memberID;
-        // private int productID;
-        // private int amount;
-        // private int unitPrice;
-        // private Date orderDate;
-        // private Date sendDate;
-        // private String sendAddress;
         data () {
             return {
-                // productList: product_data,
                 promotionCode: '',
-                hasDiscount: false,
-                orderInstance:{
-                    id:'',
-                    memberID:'',
-                    productID:'',
-                    amount:'',
-                    unitPrice:'',
-                    orderDate:'',
-                    sendDate:'',
-                    sendAddress:'',
-                }
+                // orderInstance:{
+                //     id:'',
+                //     memberID:'',
+                //     productID:'',
+                //     amount:'',
+                //     unitPrice:'',
+                //     orderDate:'',
+                //     sendDate:'',
+                //     sendAddress:'',
+                // }
             }
         },
         methods: {
             handleCount (index, count) {
                 if (count < 0 && this.cartList[index].count === 1) return;
-                let payload = {
+                this.$store.commit('editCartCount', {
                     id: this.cartList[index].id,
                     count: count
-                }
-                this.editCartCount(payload)
+                });
             },
-            editCartCount (payload) {
-                const product = this.cartList.find(item => item.id === payload.id);
-                product.count += payload.count;
-            },
-
             handleDelete (index) {
-                this.deleteCart(this.cartList[index].id)
+                this.$store.commit('deleteCart', this.cartList[index].id);
             },
-            deleteCart (id) {
-                const index = this.cartList.findIndex(item => item.id === id);
-                this.cartList.splice(index, 1);
-            },
-
             handleCheckCode () {
                 if (this.promotionCode === '') {
                     window.alert('请输入优惠码');
@@ -168,23 +150,23 @@
                 if (this.promotionCode !== 'Vue.js') {
                     window.alert('优惠码验证失败');
                 } else {
-                    this.hasDiscount = true;
+                    this.$store.commit('enjoyDiscount')
                 }
             },
             handleOrder () {
+                // 购买
                 let requestList = []
                 let timeStamp = (new Date()).valueOf() % 2147483648
                 this.cartList.forEach(item => {
                     let newInstance = {}
-                    this.orderInstance.id = (timeStamp++) % 2147483648
-                    this.orderInstance.productID = item.id
-                    this.orderInstance.memberID = this.getMemberID
-                    this.orderInstance.orderDate = new Date()
-                    this.orderInstance.unitPrice = this.productDictList[item.id].price
-                    this.orderInstance.amount = item.count
-                    this.orderInstance.sendDate = new Date()
-                    this.orderInstance.sendAddress = this.getSendAddress
-                    Object.assign(newInstance, this.orderInstance)
+                    newInstance['id'] = (timeStamp++) % 2147483648
+                    newInstance['productID'] = item.id
+                    newInstance['memberID'] = this.getMemberID
+                    newInstance['orderDate'] = new Date()
+                    newInstance['unitPrice'] = this.productDictList[item.id].price
+                    newInstance['amount'] = item.count
+                    newInstance['sendDate'] = new Date()
+                    newInstance['sendAddress'] = this.getSendAddress
                     requestList.push(newInstance)
                 });
                 Axios({
@@ -196,25 +178,13 @@
                     console.log("In then method")
                     console.log(response)
                     alert("orders add success")
-                    this.$emit('cleanCartList');
-                    // this.emptyCart()
+                    this.$store.commit('emptyCart')
                 }).catch(error=>{
                     console.warn("In catch method")
                     console.warn(error)
                     alert(error)
                 })
-                // 真实环境应通过 ajax 提交购买请求后再清空购物列表
-                // return new Promise(resolve=> {
-                //     setTimeout(() => {
-                //         this.emptyCart()
-                //         resolve();
-                //     }, 500)
-                // });
             },
-            // emptyCart () {
-            //     let len = this.cartList.length
-            //     this.cartList.splice(0, len)
-            // }
         }
     }
 </script>

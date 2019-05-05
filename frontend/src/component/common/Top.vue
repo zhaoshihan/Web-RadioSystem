@@ -39,7 +39,7 @@
     export default {
         computed:{
             getUserName(){
-                return this.$store.state.currentUser['name'];
+                return this.$store.state.global.currentUser['name'];
             }
         },
         methods:{

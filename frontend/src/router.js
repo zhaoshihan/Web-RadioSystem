@@ -32,7 +32,7 @@ const router = [
         },
         component: (resolve) => require(['./page/StaffHome.vue'], resolve),
         beforeEnter: (to, from, next) => {
-            if(store.state.isStaff){
+            if(store.state.global.isStaff){
                 next()
             }
             else {
@@ -47,7 +47,7 @@ const router = [
         },
         component: (resolve) => require(['./page/MemberHome.vue'], resolve),
         beforeEnter: (to, from, next) => {
-            if(store.state.isMember){
+            if(store.state.global.isMember){
                 next()
             }
             else {

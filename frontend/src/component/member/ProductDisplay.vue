@@ -41,7 +41,7 @@
         </div>
         <div class="selection">
             <div class="row columns is-multiline">
-                <product-card v-for="item in filteredAndOrderedList" :info="item" :key="item.id" :cart-list="cartList"></product-card>
+                <product-card v-for="item in filteredAndOrderedList" :info="item" :key="item.id"></product-card>
             </div>
         </div>
     </div>
@@ -50,19 +50,19 @@
 <script>
     import ProductCard from './ProductCard'
     export default {
-        props:{
-            productList:Array,
-            cartList:Array,
+        mounted () {
+            this.$store.dispatch('getProductList');
         },
         components: { ProductCard },
         computed: {
-            types() {
-                const types = this.productList.map(item => item.type);
-                return this.getFilterArray(types);
+            productList(){
+                return this.$store.state.member.productList;
             },
-            habitats() {
-                const habitats = this.productList.map(item => item.habitat);
-                return this.getFilterArray(habitats);
+            types () {
+                return this.$store.getters.types;
+            },
+            habitats () {
+                return this.$store.getters.habitats;
             },
             filteredAndOrderedList () {
                 let list = [...this.productList];
@@ -93,18 +93,6 @@
             }
         },
         methods: {
-            getFilterArray (array) {
-                const res = [];
-                const json = {};
-                for (let i = 0; i < array.length; i++){
-                    const _self = array[i];
-                    if(!json[_self]){
-                        res.push(_self);
-                        json[_self] = 1;
-                    }
-                }
-                return res;
-            },
             handleFilterTypes (type) {
                 if (this.filterTypes === type) {
                     this.filterTypes = '';

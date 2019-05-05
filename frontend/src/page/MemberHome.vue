@@ -3,10 +3,10 @@
         <top></top>
         <div class="columns">
             <div class="column is-one-fifth">
-                <side-bar @changeBar="handleChangeBar" :cart-list="cartList"></side-bar>
+                <side-bar @changeBar="handleChangeBar"></side-bar>
             </div>
             <div class="column">
-                <component :is="currentView" :product-list="productList" :cart-list="cartList" @cleanCartList="handleCleanCartList"></component>
+                <component :is="currentView"></component>
             </div>
         </div>
     </div>
@@ -27,32 +27,17 @@
             Cart,
         },
         mounted () {
-            Axios({
-                method: 'get',
-                url: '/product/query/all',
-                baseURL: 'http://localhost:8082',
-            }).then(response=> {
-                console.log(response)
-                this.productList = response.data
-            }).catch(error=>{
-                console.warn(error)
-                alert(error)
-            })
+
         },
         data(){
             return{
                 currentView: 'ProductDisplay',
-                productList: [],
-                cartList: [],
             }
         },
         methods:{
             handleChangeBar:function (name) {
                 this.currentView = name;
             },
-            handleCleanCartList:function () {
-                this.cartList = []
-            }
         }
 
     }
