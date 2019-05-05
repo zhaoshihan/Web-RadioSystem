@@ -75,17 +75,28 @@
 				},
 			}
 		},
+		computed:{
+	    	getAccount(){
+	    		return this.loginForm.account;
+			},
+			getPassword(){
+	    		return this.loginForm.password;
+			},
+	    	getPicked(){
+	    		return this.loginForm.picked;
+			}
+		},
 		methods: {
 	    	validateForm: function(){
-				if (typeof this.loginForm.account == "undefined" ||
-						this.loginForm.account == null ||
-						this.loginForm.account === "") {
+				if (typeof this.getAccount == "undefined" ||
+						this.getAccount == null ||
+						this.getAccount === "") {
 					alert("account is null!")
 					return false;
 				}
-				if (typeof this.loginForm.password == "undefined" ||
-						this.loginForm.password == null ||
-						this.loginForm.password === "") {
+				if (typeof this.getPassword == "undefined" ||
+						this.getPassword == null ||
+						this.getPassword === "") {
 					alert("password is null!")
 					return false;
 				}
@@ -95,7 +106,7 @@
 			login: function () {
 				if(this.validateForm()){
 					/* tmpUrl = "/member/check" or "/staff/check" */
-					let tmpUrl = "/" + this.loginForm.picked + "/check"
+					let tmpUrl = "/" + this.getPicked + "/check"
 					// var formData = JSON.stringify(this.loginForm)
 					console.log(this.loginForm)
 					Axios({
@@ -103,17 +114,21 @@
 						url: tmpUrl,
 						baseURL: 'http://localhost:8082',
 						auth: {
-							username: this.loginForm.account,
-							password: this.loginForm.password,
+							username: this.getAccount,
+							password: this.getPassword,
 						},
 						// params: this.loginForm
 					}).then(response=> {
 						console.log("In then method")
 						console.log(response.data)
-						this.$store.commit('LogIn', {bool:true, info: response.data})
-						// console.log(this.$store.state.user)
-						let pushUrl = "/" + this.loginForm.picked + "_home"
-						this.$router.push(pushUrl)
+						if(this.getPicked === 'member'){
+							this.$store.commit('memberLogin', response.data)
+							this.$router.push('/member_home')
+						}
+						else if(this.getPicked === 'staff'){
+							this.$store.commit('staffLogin', response.data)
+							this.$router.push('/staff_home')
+						}
 					}).catch(error=>{
 						console.warn("In catch method")
 						console.warn(error)
@@ -122,11 +137,11 @@
 				}
 			},
 			register:function () {
-				alert("register function: " + this.loginForm.picked)
-				if(this.loginForm.picked === "staff"){
+				alert("register function: " + this.getPicked)
+				if(this.getPicked === "staff"){
 					this.$router.push('/register_staff')
 				}
-				else if(this.loginForm.picked === "member"){
+				else if(this.getPicked === "member"){
 					this.$router.push('/register_member')
 				}
 				else{

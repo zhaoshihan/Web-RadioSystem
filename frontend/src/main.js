@@ -41,16 +41,22 @@ router.afterEach((to, from, next) => {
 // private String description;
 const store = new Vuex.Store({
     state:{
-        isLogIn:false,
+        isMember:false,
+        isStaff:false,
         user:null,
     },
     mutations:{
-        LogIn(state, payload){
-            state.isLogIn = payload.bool;
-            state.user = payload.info;
+        memberLogin(state, payload){
+            state.isMember = true;
+            state.user = payload;
+        },
+        staffLogin(state,payload){
+            state.isStaff = true;
+            state.user = payload;
         },
         LogOut(state){
-            state.isLogIn = false;
+            state.isMember = false;
+            state.isStaff = false;
             state.user = null;
         }
     }

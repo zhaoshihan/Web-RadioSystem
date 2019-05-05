@@ -32,7 +32,7 @@ const router = [
         },
         component: (resolve) => require(['./page/StaffHome.vue'], resolve),
         beforeEnter: (to, from, next) => {
-            if(store.state.isLogIn){
+            if(store.state.isStaff){
                 next()
             }
             else {
@@ -47,7 +47,7 @@ const router = [
         },
         component: (resolve) => require(['./page/MemberHome.vue'], resolve),
         beforeEnter: (to, from, next) => {
-            if(store.state.isLogIn){
+            if(store.state.isMember){
                 next()
             }
             else {
@@ -55,10 +55,6 @@ const router = [
             }
         },
     },
-    // {
-    //     path: '*',
-    //     redirect: '/login'
-    // },
 ]
 
 export default router
