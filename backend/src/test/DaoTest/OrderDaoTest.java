@@ -51,4 +51,20 @@ public class OrderDaoTest {
         assertEquals(newOrder.getSendAddress(), "Wuhan");
     }
 
+    @Test
+    public void testUpdate()
+    {
+        Order order = orderDao.getOrderById(1);
+        order.setAmount(100);
+        orderDao.updateOrder(order);
+        Order newOrder = orderDao.getOrderById(1);
+        assertEquals(newOrder.getAmount(), 100);
+    }
+
+    @Test
+    public void testDelete()
+    {
+        Order order = orderDao.getOrderById(1);
+        orderDao.deleteOrder(order);
+    }
 }

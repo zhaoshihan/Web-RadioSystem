@@ -20,4 +20,19 @@ public class ProductService implements IProductService{
     public List<Product> getAllProducts(){
         return productDao.getAllProducts();
     }
+
+    @Override
+    public boolean addProduct(Product product){
+        return productDao.addProduct(product) > 0;
+    }
+
+    @Override
+    public boolean updateProduct(Product product){
+        return productDao.updateProduct(product) > 0;
+    }
+
+    @Override
+    public boolean deleteProduct(Product product){
+        return productDao.deleteProduct(product) > 0;
+    }
 }

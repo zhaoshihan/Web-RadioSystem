@@ -7,6 +7,8 @@ import java.util.List;
 public interface IOrderDao {
     public Order getOrderById(int id);
     public List<Order> getAllOrders();
-    public int addOrder(Order order);
     public List<Order> getOrderByMemberId(int memberId);
+    public int addOrder(Order order);
+    public int updateOrder(Order order);
+    public int deleteOrder(Order order);
 }

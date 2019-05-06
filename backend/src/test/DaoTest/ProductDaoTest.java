@@ -9,6 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.transaction.Transactional;
+import java.sql.Date;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
 
@@ -33,6 +34,42 @@ public class ProductDaoTest {
         for (Product item : products){
             System.out.println(item.getName());
         }
+    }
+
+    @Test
+    public void testAdd()
+    {
+        Product product = new Product();
+        product.setId(100);
+        product.setType("light");
+        product.setName("music");
+        product.setPrice(500);
+        product.setDiscount(300);
+        product.setHabitat("China");
+        product.setDirector("me");
+        product.setSuperStar("me");
+        product.setDate(new Date(1970-11-11));
+        product.setDescription("hhh");
+        productDao.addProduct(product);
+        Product newProduct = productDao.getProductById(100);
+        assertEquals(newProduct.getDescription(), "hhh");
+    }
+
+    @Test
+    public void testUpdate()
+    {
+        Product product = productDao.getProductById(1);
+        product.setHabitat("Britain");
+        productDao.updateProduct(product);
+        Product newProduct = productDao.getProductById(1);
+        assertEquals(newProduct.getHabitat(), "Britain");
+    }
+
+    @Test
+    public void testDelete()
+    {
+        Product product = productDao.getProductById(1);
+        productDao.deleteProduct(product);
     }
 
 }

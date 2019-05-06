@@ -26,6 +26,15 @@ public class OrderRestController {
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/query/{memberID}", method = RequestMethod.GET)
+    public ResponseEntity<List<Order>> getProductById(@PathVariable("memberID") int memberID){
+        List<Order> orders = orderService.getOrderByMemberId(memberID);
+        if (orders.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity addOrder(@RequestBody List<Order> orderList){
         for (Order order: orderList){
@@ -42,13 +51,36 @@ public class OrderRestController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/query/{memberID}", method = RequestMethod.GET)
-    public ResponseEntity<List<Order>> getProductById(@PathVariable("memberID") int memberID){
-        List<Order> orders = orderService.getOrderByMemberId(memberID);
-        if (orders.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public ResponseEntity updateOrder(@RequestBody Order order){
+        Order orderExist = orderService.getOrderById(order.getId());
+        if(orderExist != null){
+            boolean result = orderService.updateOrder(order);
+            if(result){
+                return new ResponseEntity(HttpStatus.OK);
+            }else{
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
         }
-        return new ResponseEntity<>(orders, HttpStatus.OK);
+        else{
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public ResponseEntity deleteOrder(@RequestBody Order order){
+        Order orderExist = orderService.getOrderById(order.getId());
+        if(orderExist != null){
+            boolean result = orderService.deleteOrder(order);
+            if(result){
+                return new ResponseEntity(HttpStatus.OK);
+            }else{
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
+        }
+        else{
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
     }
 
 }
