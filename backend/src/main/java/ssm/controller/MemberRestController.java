@@ -103,8 +103,6 @@ public class MemberRestController {
         Member currentMember = memberService.getMemberById(member.getId());
         HttpStatus httpStatus;
         if (currentMember != null) {
-            currentMember.setAccount(member.getAccount());
-            currentMember.setPassword(member.getPassword());
             boolean result = memberService.updateMember(member);
             if (result) {
                 httpStatus = HttpStatus.OK;

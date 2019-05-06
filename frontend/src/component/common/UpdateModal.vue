@@ -6,15 +6,15 @@
                 title="Update of Data"
                 @on-ok="ok"
                 @on-cancel="cancel">
-            <div class="level" v-for="(value, key, index) in instance">
+            <div class="level" v-for="(value, key, index) in copyInstance">
                 <div class="level-left">
                     <p class="level-item subtitle">{{key}}:</p>
                 </div>
                 <div class="level-right">
                     <p v-if="key === 'id'" class="level-item subtitle">{{value}}</p>
-                    <input v-else-if="value instanceof Number" type="number" v-model="instance[key]" class="input">
-                    <input v-else-if="value instanceof Date" type="date" v-model="instance[key]" class="input">
-                    <input v-else type="text" v-model="instance[key]" class="input">
+                    <input v-else-if="value instanceof Number" type="number" v-model="copyInstance[key]" class="input">
+                    <input v-else-if="value instanceof Date" type="date" v-model="copyInstance[key]" class="input">
+                    <input v-else type="text" v-model="copyInstance[key]" class="input">
                 </div>
             </div>
         </i-modal>
@@ -22,6 +22,9 @@
 </template>
 
 <script>
+    import Axios from 'axios'
+    Axios.defaults.headers.post['Content-Type'] = 'application/json';
+
     export default {
         props:{
             instance:Object,
@@ -35,36 +38,34 @@
         },
         computed:{
             copyInstance:function(){
-                // let temp = this.instance
-                // this.newInstance = {...temp}
                 return Object.assign(this.newInstance, this.instance)
-                // return this.newInstance
             }
         },
         methods: {
             ok () {
                 console.log(this.newInstance)
                 alert(this.newInstance)
-                // Axios({
-                //     method: 'post',
-                //     url: '/' + this.target +'/update',
-                //     baseURL: 'http://localhost:8082',
-                //     data: this.newInstance
-                // }).then(response=> {
-                //     console.log("In then method")
-                //     console.log(response)
-                //     alert("register success")
-                //     this.$Message.info('Clicked ok');
-                // }).catch(error=>{
-                //     console.warn("In catch method")
-                //     console.warn(error)
-                //     alert(error)
-                //     this.$Message.info('Clicked cancel');
-                // })
-
+                if(this.target === 'member'){
+                    Axios({
+                        method: 'post',
+                        url: '/member/update',
+                        baseURL: 'http://localhost:8082',
+                        data: this.newInstance
+                    }).then(response=> {
+                        console.log("In then method")
+                        console.log(response)
+                        alert("update success")
+                        // this.$Message.info('Clicked ok');
+                    }).catch(error=>{
+                        console.warn("In catch method")
+                        console.warn(error)
+                        alert(error)
+                        // this.$Message.info('Clicked cancel');
+                    })
+                }
             },
             cancel () {
-                this.$Message.info('Clicked cancel');
+                // this.$Message.info('Clicked cancel');
             }
         }
     }

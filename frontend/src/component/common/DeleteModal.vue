@@ -20,9 +20,13 @@
 </template>
 
 <script>
+    import Axios from 'axios'
+    Axios.defaults.headers.post['Content-Type'] = 'application/json';
+
     export default {
         props:{
             instance:Object,
+            target:String,
         },
         data(){
             return{
@@ -33,11 +37,26 @@
         methods:{
             del () {
                 this.modal_loading = true;
-                setTimeout(() => {
-                    this.modal_loading = false;
-                    this.modal2 = false;
-                    this.$Message.success('Successfully delete');
-                }, 2000);
+
+                if(this.target === 'member'){
+                    Axios({
+                        method: 'post',
+                        url: '/member/delete',
+                        baseURL: 'http://localhost:8082',
+                        data: this.instance
+                    }).then(response=> {
+                        console.log("In then method")
+                        console.log(response)
+                        alert("delete success")
+                    }).catch(error=>{
+                        console.warn("In catch method")
+                        console.warn(error)
+                        alert(error)
+                    })
+                }
+
+                this.modal_loading = false;
+                this.modal2 = false;
             }
         }
 

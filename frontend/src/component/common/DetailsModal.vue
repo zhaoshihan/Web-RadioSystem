@@ -31,10 +31,10 @@
         },
         methods: {
             ok () {
-                this.$Message.info('Clicked ok');
+                // this.$Message.info('Clicked ok');
             },
             cancel () {
-                this.$Message.info('Clicked cancel');
+                // this.$Message.info('Clicked cancel');
             }
         }
     }

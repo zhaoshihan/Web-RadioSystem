@@ -94,6 +94,13 @@ const member = {
             const habitats = state.productList.map(item => item.habitat);
             return getFilterArray(habitats);
         },
+        productDictList: state => {
+            const dict = {};
+            state.productList.forEach(item => {
+                dict[item.id] = item;
+            });
+            return dict;
+        },
     },
     mutations: {
         enjoyDiscount(state){

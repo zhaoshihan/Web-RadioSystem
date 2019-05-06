@@ -77,6 +77,9 @@
             productList(){
                 return this.$store.state.member.productList
             },
+            productDictList () {
+                return this.$store.getters.productDictList;
+            },
             hasDiscount(){
                 return this.$store.state.member.hasDiscount
             },
@@ -85,13 +88,6 @@
             },
             getSendAddress(){
                 return this.$store.state.global.currentUser['address']
-            },
-            productDictList () {
-                const dict = {};
-                this.productList.forEach(item => {
-                    dict[item.id] = item;
-                });
-                return dict;
             },
             countAll () {
                 let count = 0;

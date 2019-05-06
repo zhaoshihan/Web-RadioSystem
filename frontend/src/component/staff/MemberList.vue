@@ -24,7 +24,7 @@
                 <td>{{member.password}}</td>
                 <td><detail-modal :instance="member"></detail-modal></td>
                 <td><update-modal :instance="member" target="member"></update-modal></td>
-                <td><delete-modal :instance="member"></delete-modal></td>
+                <td><delete-modal :instance="member" target="member"></delete-modal></td>
             </tr>
             </tbody>
             <tfoot>

@@ -17,6 +17,7 @@
     import SideBar from '../component/member/MemberSideBar'
     import ProductDisplay from '../component/member/ProductDisplay'
     import Cart from '../component/member/Cart'
+    import OwnOrder from '../component/member/OwnOrder'
     import Axios from 'axios'
 
     export default {
@@ -25,6 +26,7 @@
             SideBar,
             ProductDisplay,
             Cart,
+            OwnOrder,
         },
         mounted () {
 

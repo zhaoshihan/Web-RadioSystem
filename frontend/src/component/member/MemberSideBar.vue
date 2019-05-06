@@ -9,7 +9,7 @@
                 <ul>
                     <li><a @click="chooseProductDisplay">Products</a></li>
                     <li><a @click="chooseCart">Cart&nbsp;<span v-if="cartList.length" class="tag">{{cartList.length}}</span></a></li>
-                    <li><a @click="chooseOrderList">Orders</a></li>
+                    <li><a @click="chooseOwnOrder">Orders</a></li>
                 </ul>
             </li>
         </ul>
@@ -30,8 +30,8 @@
             chooseCart(){
                 this.$emit('changeBar', 'Cart')
             },
-            chooseOrderList(){
-                this.$emit('changeBar', 'OrderList')
+            chooseOwnOrder(){
+                this.$emit('changeBar', 'OwnOrder')
             }
         }
     }
