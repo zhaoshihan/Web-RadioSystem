@@ -27,6 +27,7 @@
     export default {
         props:{
             instance:Object,
+            target:String,
         },
         data () {
             return {
@@ -35,10 +36,28 @@
         },
         methods: {
             ok () {
-                this.$Message.info('Clicked ok');
+                // this.$Message.info('Clicked ok');
+                if(this.target === 'member'){
+                    Axios({
+                        method: 'post',
+                        url: '/member/add',
+                        baseURL: 'http://localhost:8082',
+                        data: this.instance
+                    }).then(response=> {
+                        console.log("In then method")
+                        console.log(response)
+                        alert("add success")
+                        // this.$Message.info('Clicked ok');
+                    }).catch(error=>{
+                        console.warn("In catch method")
+                        console.warn(error)
+                        alert(error)
+                        // this.$Message.info('Clicked cancel');
+                    })
+                }
             },
             cancel () {
-                this.$Message.info('Clicked cancel');
+                // this.$Message.info('Clicked cancel');
             }
         },
         computed: {

@@ -28,7 +28,7 @@
             </tr>
             </tbody>
             <tfoot>
-                <tr><add-modal :instance="memberInstance"></add-modal></tr>
+                <tr><add-modal :instance="memberInstance" target="member"></add-modal></tr>
             </tfoot>
         </table>
     </div>
