@@ -36,7 +36,6 @@
         },
         methods: {
             ok () {
-                // this.$Message.info('Clicked ok');
                 if(this.target === 'member'){
                     Axios({
                         method: 'post',
@@ -47,13 +46,46 @@
                         console.log("In then method")
                         console.log(response)
                         alert("add success")
-                        // this.$Message.info('Clicked ok');
                     }).catch(error=>{
                         console.warn("In catch method")
                         console.warn(error)
                         alert(error)
-                        // this.$Message.info('Clicked cancel');
                     })
+                }
+                else if(this.target === 'product'){
+                    Axios({
+                        method: 'post',
+                        url: '/product/add',
+                        baseURL: 'http://localhost:8082',
+                        data: this.instance
+                    }).then(response=> {
+                        console.log("In then method")
+                        console.log(response)
+                        alert("add success")
+                    }).catch(error=>{
+                        console.warn("In catch method")
+                        console.warn(error)
+                        alert(error)
+                    })
+                }
+                else if(this.target === 'order'){
+                    Axios({
+                        method: 'post',
+                        url: '/order/add',
+                        baseURL: 'http://localhost:8082',
+                        data: this.instance
+                    }).then(response=> {
+                        console.log("In then method")
+                        console.log(response)
+                        alert("add success")
+                    }).catch(error=>{
+                        console.warn("In catch method")
+                        console.warn(error)
+                        alert(error)
+                    })
+                }
+                else{
+                    alert("target error!")
                 }
             },
             cancel () {

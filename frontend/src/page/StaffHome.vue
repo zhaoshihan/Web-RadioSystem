@@ -15,6 +15,7 @@
 <script>
     import MemberList from '../component/staff/MemberList.vue'
     import ProductList from '../component/staff/ProductList'
+    import OrderList from '../component/staff/OrderList'
     import Top from '../component/common/Top.vue'
     import SideBar from '../component/staff/StaffSideBar.vue'
 
@@ -25,6 +26,7 @@
             SideBar,
             MemberList,
             ProductList,
+            OrderList,
         },
         data () {
             return {

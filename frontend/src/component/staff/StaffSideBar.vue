@@ -9,6 +9,7 @@
         <ul>
           <li><a @click="chooseMemberList">Members</a></li>
           <li><a @click="chooseProductList">Products</a></li>
+          <li><a @click="chooseOrderList">Orders</a></li>
         </ul>
       </li>
     </ul>
@@ -23,8 +24,10 @@ export default {
       },
       chooseProductList(){
         this.$emit('changeBar', 'ProductList')
+      },
+      chooseOrderList(){
+        this.$emit('changeBar', 'OrderList')
       }
-
     }
 }
 </script>

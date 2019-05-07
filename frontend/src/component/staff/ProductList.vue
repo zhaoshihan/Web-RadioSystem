@@ -3,7 +3,7 @@
         <!-- Default panel contents -->
         <div class="panel-heading">Product Lists</div>
         <!-- Table -->
-        <table id ="product_tb" class="table">
+        <table class="table">
             <thead>
             <tr>
                 <th>ID</th>
@@ -24,11 +24,11 @@
                 <td>{{product.date.toDateString()}}</td>
                 <td><detail-modal :instance="product"></detail-modal></td>
                 <td><update-modal :instance="product" target="product"></update-modal></td>
-                <td><delete-modal :instance="product"></delete-modal></td>
+                <td><delete-modal :instance="product" target="product"></delete-modal></td>
             </tr>
             </tbody>
             <tfoot>
-            <tr><add-modal :instance="productInstance"></add-modal></tr>
+            <tr><add-modal :instance="productInstance" target="product"></add-modal></tr>
             </tfoot>
         </table>
     </div>

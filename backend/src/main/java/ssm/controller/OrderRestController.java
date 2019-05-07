@@ -35,8 +35,8 @@ public class OrderRestController {
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseEntity addOrder(@RequestBody List<Order> orderList){
+    @RequestMapping(value = "/addList", method = RequestMethod.POST)
+    public ResponseEntity addListOrder(@RequestBody List<Order> orderList){
         for (Order order: orderList){
             Order orderExist = orderService.getOrderById(order.getId());
             if (orderExist != null) {
@@ -49,6 +49,22 @@ public class OrderRestController {
             }
         }
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public ResponseEntity addOrder(@RequestBody Order order){
+        Order orderExist = orderService.getOrderById(order.getId());
+        if (orderExist != null) {
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }else{
+            boolean result = orderService.addOrder(order);
+            if(result){
+                return new ResponseEntity(HttpStatus.OK);
+            }
+            else {
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
+        }
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)

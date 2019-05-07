@@ -55,13 +55,46 @@
                         console.log("In then method")
                         console.log(response)
                         alert("update success")
-                        // this.$Message.info('Clicked ok');
                     }).catch(error=>{
                         console.warn("In catch method")
                         console.warn(error)
                         alert(error)
-                        // this.$Message.info('Clicked cancel');
                     })
+                }
+                else if(this.target === 'product'){
+                    Axios({
+                        method: 'post',
+                        url: '/product/update',
+                        baseURL: 'http://localhost:8082',
+                        data: this.newInstance
+                    }).then(response=> {
+                        console.log("In then method")
+                        console.log(response)
+                        alert("update success")
+                    }).catch(error=>{
+                        console.warn("In catch method")
+                        console.warn(error)
+                        alert(error)
+                    })
+                }
+                else if(this.target === 'order'){
+                    Axios({
+                        method: 'post',
+                        url: '/order/update',
+                        baseURL: 'http://localhost:8082',
+                        data: this.newInstance
+                    }).then(response=> {
+                        console.log("In then method")
+                        console.log(response)
+                        alert("update success")
+                    }).catch(error=>{
+                        console.warn("In catch method")
+                        console.warn(error)
+                        alert(error)
+                    })
+                }
+                else{
+                    alert("target error!")
                 }
             },
             cancel () {

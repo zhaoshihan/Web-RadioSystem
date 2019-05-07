@@ -1,37 +1,37 @@
 <template>
     <div class="panel">
         <!-- Default panel contents -->
-        <div class="panel-heading">购物清单</div>
+        <div class="panel-heading">Cart Lists</div>
         <!-- Table -->
         <table class="table is-fullwidth">
             <thead>
             <tr>
-                <th>商品信息</th>
-                <th class="has-text-centered">单价</th>
-                <th class="has-text-centered">数量</th>
-                <th class="has-text-centered">小计</th>
-                <th class="has-text-centered">删除</th>
+                <th>Product Information</th>
+                <th class="has-text-centered">UnitPrice</th>
+                <th class="has-text-centered">Amount</th>
+                <th class="has-text-centered">Sum Price</th>
+                <th class="has-text-centered">Remove</th>
             </tr>
             </thead>
             <tfoot>
                 <tr class="level">
                     <p class="level-item">
-                        共计 <span class="tag is-white is-large">{{ countAll }}</span> 件商品
+                        Total <span class="tag is-white is-large">{{ countAll }}</span> Good(s)
                     </p>
                     <p class="level-item">
-                        应付总额 <span class="tag is-white is-large">¥ {{ costAll }}</span>
+                        Total Price <span class="tag is-white is-large">¥ {{ costAll }}</span>
                         <span v-if="hasDiscount">
-                            （折后价 <span class="tag is-white is-large">¥ {{ discoutCostAll }}</span>）
+                            （After discount <span class="tag is-white is-large">¥ {{ discoutCostAll }}</span>）
                         </span>
                     </p>
                     <p class="level-item">
-                        <button v-if="cartList.length" class="button is-info" @click="handleOrder">现在结算</button>
+                        <button v-if="cartList.length" class="button is-info" @click="handleOrder">Buy Now</button>
                     </p>
                 </tr>
             </tfoot>
             <tbody>
                 <tr v-for="(item, index) in cartList" :key="item.id">
-                    <td>
+                    <td class="has-text-centered">
                         <div class="tags">
                             <figure class="image is-24x24">
                                 <img src="https://bulma.io/images/placeholders/24x24.png" alt="Image">
@@ -39,27 +39,27 @@
                             <span class="has-text-left">{{ productDictList[item.id].name }}</span>
                         </div>
                     </td>
-                    <td>
+                    <td class="has-text-centered">
                         ¥ {{productDictList[item.id].price}}
                     </td>
-                    <td>
+                    <td class="has-text-centered">
                         <a class="tag is-rounded" @click="handleCount(index, -1)">-</a>
                         {{ item.count }}
                         <a class="tag is-rounded" @click="handleCount(index, 1)">+</a>
                     </td>
-                    <td>
+                    <td class="has-text-centered">
                         ¥ {{ productDictList[item.id].price * item.count }}
                     </td>
-                    <td>
+                    <td class="has-text-centered">
                         <a class="button is-danger is-small" @click="handleDelete(index)">Delete</a>
                     </td>
                 </tr>
                 <tr class="has-text-centered">
-                    <td class="cart-empty" v-if="!cartList.length">购物车为空</td>
+                    <td class="cart-empty" v-if="!cartList.length">Cart is Empty</td>
                     <td class="cart-promotion" v-show="cartList.length">
-                        <label>使用优惠码：</label>
+                        <label>Bond：</label>
                         <input type="text" v-model="promotionCode">
-                        <button class="button is-small is-info" @click="handleCheckCode">验证</button>
+                        <button class="button is-small is-info" @click="handleCheckCode">Check</button>
                     </td>
                 </tr>
             </tbody>
@@ -167,7 +167,7 @@
                 });
                 Axios({
                     method: 'post',
-                    url: '/order/add',
+                    url: '/order/addList',
                     baseURL: 'http://localhost:8082',
                     data: requestList
                 }).then(response=> {

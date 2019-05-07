@@ -7,7 +7,13 @@
     <select id="getOrderById" resultType="ssm.entity.Order" parameterType="int">select * from radio.`order` where id = #{id}</select>
     <select id="getAllOrders" resultType="ssm.entity.Order">select * from radio.`order`</select>
     <select id="getOrderByMemberId" resultType="ssm.entity.Order" parameterType="int">select * from radio.`order` where memberID = #{memberId}</select>
-    <insert id="addOrder" parameterType="ssm.entity.Order">insert into radio.`order` values(#{id}, #{productID}, #{memberID}, #{orderDate}, #{unitPrice}, #{amount}, #{sendDate}, #{sendAddress})</insert>
+    <insert id="addOrder" parameterType="ssm.entity.Order" useGeneratedKeys="true" keyProperty="id">insert into radio.`order` values(#{id}, #{productID}, #{memberID}, #{orderDate}, #{unitPrice}, #{amount}, #{sendDate}, #{sendAddress})</insert>
+    <update id="updateOrder" parameterType="ssm.entity.Order">
+        update radio.`order` set productID=#{productID}, memberID=#{memberID}, orderDate=#{orderDate}, unitprice=#{unitPrice},
+                                    amount=#{amount}, sendDate=#{sendDate}, sendAddress=#{sendAddress}
+        where id=#{id}
+    </update>
+    <delete id="deleteOrder" parameterType="ssm.entity.Order">delete from radio.`order` where id=#{id}</delete>
 </mapper>
 
 <!--        private int id;-->
